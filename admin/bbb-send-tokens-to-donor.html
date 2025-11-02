@@ -21,6 +21,7 @@
         .form-group input { width: 100%; padding: 15px; border-radius: 10px; border: 2px solid #667eea; background: #0a0e27; color: #fff; font-size: 1.1em; }
         .btn { background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%); color: white; padding: 20px 50px; border-radius: 50px; font-size: 1.3em; font-weight: bold; border: none; cursor: pointer; transition: transform 0.3s; width: 100%; margin-top: 20px; }
         .btn:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         .info-box { background: #4caf50; color: #fff; padding: 30px; border-radius: 15px; margin: 30px 0; }
         .warning-box { background: #ff5722; color: #fff; padding: 30px; border-radius: 15px; margin: 30px 0; }
         .timeout-box { background: #ffc107; color: #000; padding: 30px; border-radius: 15px; margin: 30px 0; font-weight: bold; }
@@ -34,6 +35,7 @@
         <a href="index.html">Начало</a>
         <a href="aaa-add-liquidity.html">ААА: Ликвидност</a>
         <a href="bbb-send-tokens-to-donor.html">БББ: Изпрати Токени</a>
+        <a href="ggg-mint-and-send.html">ГГГ: Mint и Изпрати</a>
         <a href="vvv-mint-new-AMS.html">ВВВ: Mint Нови</a>
         <a href="contact.html">Контакти</a>
     </nav>
@@ -60,14 +62,10 @@
             <h3>⏳ ДИНАМИЧЕН ТАЙМАУТ</h3>
             <p style="font-size: 1.2em; line-height: 1.8;">
                 🕐 <strong>Базов:</strong> 12 часа между изпращания<br>
-                ⚡ <strong>Ускорен:</strong> 30 минути (при висока цена ИЛИ много дарители)<br><br>
+                ⚡ <strong>Ускорен:</strong> 30 минути (при повече от 1000 в опашката)<br><br>
                 
-                <strong>Автоматично намалява до 30 мин когато:</strong><br>
-                ✅ Цената стане 100x по-висока (1 AMS = 0.1 BNB)<br>
-                ✅ В опашката има 1000+ дарители<br>
-                ✅ Ликвидността е много голяма<br><br>
-                
-                🎯 <strong>Текущ timeout:</strong> <span id="currentTimeout">12 часа</span>
+                🎯 <strong>Текущ timeout:</strong> <span id="currentTimeout">Зареждане...</span><br>
+                🎯 <strong>Дарители в опашка:</strong> <span id="queueCount">0</span>
             </p>
         </div>
         
@@ -87,14 +85,14 @@
             <div class="queue-box">
                 <strong style="color: #4caf50;">📊 Статистика:</strong><br><br>
                 <span style="color: #b8c5d6;">
-                Последно изпращане: <span id="lastSent">Никога</span><br>
-                Време до следващо: <span id="timeRemaining">Готов!</span><br>
+                Последно изпращане: <span id="lastSent">Зареждане...</span><br>
+                Време до следващо: <span id="timeRemaining">Зареждане...</span><br>
                 Твой баланс: <span id="ownerBalance">0 AMS</span><br>
                 Дарители в опашка: <span id="queueLength">0</span>
                 </span>
             </div>
             
-            <button class="btn" onclick="sendTokens()">💸 Изпрати Токени</button>
+            <button class="btn" id="sendBtn" onclick="sendTokens()">💸 Изпрати Токени</button>
             
             <div id="status" class="status"></div>
         </div>
@@ -109,39 +107,133 @@
                 🔒 Адресът трябва да е валиден BEP-20 address
             </p>
         </div>
-        
-        <div class="info-box" style="margin-top: 40px;">
-            <h3>🎯 Как да използваш БББ?</h3>
-            <p style="font-size: 1.1em; line-height: 1.8;">
-                <strong>Сценарий 1: Вариант А (Ръчно дарение)</strong><br>
-                1. Дарител изпраща BNB към твоя wallet<br>
-                2. Изпраща имейл с адреса си<br>
-                3. ТИ отваряш тази страница<br>
-                4. Въвеждаш адреса му и количество (100-1000 AMS)<br>
-                5. Изпращаш токени<br><br>
-                
-                <strong>Сценарий 2: Бонуси за ранни дарители</strong><br>
-                1. Първите 10 дарители получават повече<br>
-                2. Вместо 1000 AMS → изпращаш 1500 AMS<br>
-                3. Награждаваш лоялността!<br><br>
-                
-                <strong>Сценарий 3: Грешка в автоматичното изпращане</strong><br>
-                1. Автоматичният процес се провали<br>
-                2. Ръчно изпращаш на засегнатия дарител<br>
-                3. Коригираш проблема
-            </p>
-        </div>
     </div>
 
     <script>
-        const CONTRACT_ADDRESS = '0x0000000000000000000000000000000000000000';
-        let lastSentTime = 0;
+        const CONTRACT_ADDRESS = 'YOUR_CONTRACT_ADDRESS_HERE'; // ЗАМЕНИ С РЕАЛНИЯ АДРЕС!
+        
+        const CONTRACT_ABI = [
+            {
+                "inputs": [{"internalType": "address", "name": "donor", "type": "address"}, {"internalType": "uint256", "name": "amount", "type": "uint256"}],
+                "name": "CPanelSendTokensToDonor",
+                "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "balanceOf",
+                "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "getQueueLength",
+                "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "lastOwnerTransferTime",
+                "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "ownerTransferTimeout",
+                "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+        
+        let web3;
+        let contract;
+        let userAccount;
+        
+        async function init() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    web3 = new Web3(window.ethereum);
+                    const accounts = await web3.eth.getAccounts();
+                    userAccount = accounts[0];
+                    
+                    contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+                    
+                    await updateStats();
+                    
+                    // Обновявай статистиките на всеки минута
+                    setInterval(updateStats, 60000);
+                    
+                } catch (error) {
+                    showStatus('❌ Грешка при свързване с MetaMask: ' + error.message, 'error');
+                }
+            } else {
+                showStatus('❌ Моля, инсталирай MetaMask!', 'error');
+            }
+        }
+        
+        async function updateStats() {
+            try {
+                // Вземи баланс на owner
+                const balance = await contract.methods.balanceOf(userAccount).call();
+                const balanceFormatted = web3.utils.fromWei(balance, 'ether');
+                document.getElementById('ownerBalance').textContent = parseFloat(balanceFormatted).toLocaleString('bg-BG') + ' AMS';
+                
+                // Вземи дължина на опашката
+                const queueLength = await contract.methods.getQueueLength().call();
+                document.getElementById('queueLength').textContent = queueLength;
+                document.getElementById('queueCount').textContent = queueLength;
+                
+                // Вземи последно време на изпращане
+                const lastTime = await contract.methods.lastOwnerTransferTime().call();
+                const lastTimeMs = parseInt(lastTime) * 1000;
+                
+                if (lastTimeMs > 0) {
+                    const date = new Date(lastTimeMs);
+                    document.getElementById('lastSent').textContent = date.toLocaleString('bg-BG');
+                } else {
+                    document.getElementById('lastSent').textContent = 'Никога';
+                }
+                
+                // Вземи timeout
+                const timeout = await contract.methods.ownerTransferTimeout().call();
+                const timeoutHours = parseInt(timeout) / 3600;
+                
+                if (timeoutHours === 12) {
+                    document.getElementById('currentTimeout').textContent = '12 часа';
+                } else {
+                    document.getElementById('currentTimeout').textContent = '30 минути';
+                }
+                
+                // Изчисли оставащо време
+                const now = Date.now();
+                const nextAllowedTime = lastTimeMs + (parseInt(timeout) * 1000);
+                const remaining = nextAllowedTime - now;
+                
+                if (remaining > 0) {
+                    const minutes = Math.ceil(remaining / 1000 / 60);
+                    document.getElementById('timeRemaining').textContent = minutes + ' минути';
+                    document.getElementById('sendBtn').disabled = true;
+                } else {
+                    document.getElementById('timeRemaining').textContent = 'Готов!';
+                    document.getElementById('sendBtn').disabled = false;
+                }
+                
+            } catch (error) {
+                console.error('Грешка при обновяване на статистики:', error);
+            }
+        }
         
         async function sendTokens() {
-            const recipient = document.getElementById('recipientAddress').value;
+            const recipient = document.getElementById('recipientAddress').value.trim();
             const amount = parseFloat(document.getElementById('tokenAmount').value);
             
-            // Validation
+            // Валидация
             if (!recipient || !recipient.startsWith('0x') || recipient.length !== 42) {
                 showStatus('❌ Невалиден адрес! Трябва да започва с 0x и да е 42 символа.', 'error');
                 return;
@@ -152,66 +244,25 @@
                 return;
             }
             
-            // Check timeout
-            const now = Date.now();
-            const timeout = calculateTimeout(); // 12h or 30min
-            
-            if (now - lastSentTime < timeout) {
-                const remaining = Math.ceil((timeout - (now - lastSentTime)) / 1000 / 60);
-                showStatus(`⏳ Чакай още ${remaining} минути преди следващо изпращане!`, 'error');
-                return;
-            }
-            
             try {
-                const web3 = new Web3(window.ethereum);
-                const accounts = await web3.eth.getAccounts();
-                
                 showStatus('🔄 Изпращане на токени...', 'info');
+                document.getElementById('sendBtn').disabled = true;
                 
-                // TODO: Call transfer() function on contract
                 const amountWei = web3.utils.toWei(amount.toString(), 'ether');
                 
-                // Simulate success
-                setTimeout(() => {
-                    lastSentTime = Date.now();
-                    showStatus(`✅ Успешно изпратени ${amount} AMS към ${recipient.substring(0, 6)}...${recipient.substring(38)}`, 'success');
-                    updateStats();
-                }, 2000);
+                const tx = await contract.methods.CPanelSendTokensToDonor(recipient, amountWei).send({
+                    from: userAccount,
+                    gas: 200000
+                });
+                
+                showStatus(`✅ Успешно изпратени ${amount} AMS към ${recipient.substring(0, 6)}...${recipient.substring(38)}<br>Транзакция: ${tx.transactionHash}`, 'success');
+                
+                // Обнови статистиките след 3 секунди
+                setTimeout(updateStats, 3000);
                 
             } catch (error) {
                 showStatus('❌ Грешка: ' + error.message, 'error');
-            }
-        }
-        
-        function calculateTimeout() {
-            // TODO: Get real data from contract
-            const price = 0.00001; // Current price in BNB
-            const queueLength = 0;
-            
-            // If price is 100x higher OR queue > 1000
-            if (price > 0.001 || queueLength > 1000) {
-                return 30 * 60 * 1000; // 30 minutes
-            }
-            
-            return 12 * 60 * 60 * 1000; // 12 hours
-        }
-        
-        function updateStats() {
-            const timeout = calculateTimeout();
-            const timeoutText = timeout === 30 * 60 * 1000 ? '30 минути' : '12 часа';
-            document.getElementById('currentTimeout').textContent = timeoutText;
-            
-            if (lastSentTime > 0) {
-                const date = new Date(lastSentTime);
-                document.getElementById('lastSent').textContent = date.toLocaleString('bg-BG');
-                
-                const remaining = timeout - (Date.now() - lastSentTime);
-                if (remaining > 0) {
-                    const mins = Math.ceil(remaining / 1000 / 60);
-                    document.getElementById('timeRemaining').textContent = mins + ' минути';
-                } else {
-                    document.getElementById('timeRemaining').textContent = 'Готов!';
-                }
+                document.getElementById('sendBtn').disabled = false;
             }
         }
         
@@ -230,9 +281,8 @@
             }
         }
         
-        // Update stats every minute
-        setInterval(updateStats, 60000);
-        updateStats();
+        // Инициализирай при зареждане
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMS Token - Welcome</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+        .container {
+            text-align: center;
+            max-width: 900px;
+            padding: 40px;
+        }
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            animation: fadeIn 1s;
+        }
+        p {
+            font-size: 1.4em;
+            margin-bottom: 50px;
+            opacity: 0.9;
+            animation: fadeIn 1.5s;
+        }
+        .choice-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 40px 0;
+            animation: slideUp 1s;
+        }
+        .choice-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 50px 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+        .choice-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        .choice-card .icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+        .choice-card h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        .choice-card p {
+            font-size: 1em;
+            margin: 0;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .choice-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            h1 { font-size: 2.5em; }
+            p { font-size: 1.2em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ Anti-Mafia-Sponsorship</h1>
+        <p>Изберете как искате да продължите</p>
+        
+        <div class="choice-container">
+            <a href="public/index.html" class="choice-card">
+                <div class="icon">🌐</div>
+                <h2>Публична Страница</h2>
+                <p>Виж информация за проекта, дари, свържи wallet</p>
+            </a>
+            
+            <a href="#" onclick="checkAdmin(event)" class="choice-card">
+                <div class="icon">🔐</div>
+                <h2>Admin Panel</h2>
+                <p>Управление на токени, donations, ликвидност</p>
+            </a>
+        </div>
+        
+        <p style="font-size: 0.9em; margin-top: 40px; opacity: 0.7;">
+            © 2025 Anti-Mafia-Sponsorship Token. All rights reserved.
+        </p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script>
+        async function checkAdmin(event) {
+            event.preventDefault();
+            
+            // Check if MetaMask is installed
+            if (typeof window.ethereum === 'undefined') {
+                alert('⚠️ Моля, инсталирай MetaMask за да влезеш в Admin Panel!');
+                return;
+            }
+            
+            try {
+                // Request account access
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                const userAccount = accounts[0];
+                
+                // Check if user is owner (replace with your actual owner address)
+                const OWNER_ADDRESS = 'YOUR_OWNER_ADDRESS_HERE'.toLowerCase();
+                
+                if (userAccount.toLowerCase() === OWNER_ADDRESS) {
+                    // User is owner - redirect to admin
+                    window.location.href = 'admin/index.html';
+                } else {
+                    // Not owner - ask for password as backup
+                    const password = prompt('🔐 Въведи Admin Password:');
+                    
+                    // Simple password check (CHANGE THIS!)
+                    if (password === 'AMS_ADMIN_2025') {
+                        window.location.href = 'admin/index.html';
+                    } else {
+                        alert('❌ Неправилна парола! Достъпът е отказан.');
+                    }
+                }
+                
+            } catch (error) {
+                alert('❌ Грешка: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

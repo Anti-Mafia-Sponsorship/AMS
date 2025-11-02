@@ -1,0 +1,9 @@
+{
+  "name": "ams-token-project",
+  "version": "1.0.0",
+  "description": "Anti-Mafia-Sponsorship Token with Supabase Integration",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "@sendgrid/mail": "^7.7.0"
+  }
+}
