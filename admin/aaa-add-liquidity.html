@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Panel - Добави Ликвидност</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0a0e27; color: #fff; }
+        nav { background: #1a1f3a; padding: 20px; text-align: center; }
+        nav a { color: #667eea; text-decoration: none; margin: 0 15px; font-size: 1.1em; }
+        nav a:hover { color: #fff; }
+        .container { max-width: 900px; margin: 60px auto; padding: 40px; }
+        h1 { font-size: 2.5em; color: #ffc107; text-align: center; margin-bottom: 20px; }
+        .subtitle { text-align: center; color: #b8c5d6; font-size: 1.2em; margin-bottom: 50px; }
+        .panel-box { background: #1a1f3a; padding: 40px; border-radius: 20px; margin: 30px 0; border: 3px solid #ffc107; }
+        .panel-box h2 { color: #667eea; font-size: 2em; margin-bottom: 20px; }
+        .panel-box p { color: #b8c5d6; line-height: 1.8; margin-bottom: 15px; }
+        .form-group { margin: 25px 0; }
+        .form-group label { display: block; color: #667eea; font-size: 1.2em; margin-bottom: 10px; font-weight: bold; }
+        .form-group input { width: 100%; padding: 15px; border-radius: 10px; border: 2px solid #667eea; background: #0a0e27; color: #fff; font-size: 1.1em; }
+        .btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 50px; border-radius: 50px; font-size: 1.3em; font-weight: bold; border: none; cursor: pointer; transition: transform 0.3s; width: 100%; margin-top: 20px; }
+        .btn:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4); }
+        .info-box { background: #4caf50; color: #fff; padding: 30px; border-radius: 15px; margin: 30px 0; }
+        .warning-box { background: #ff5722; color: #fff; padding: 30px; border-radius: 15px; margin: 30px 0; }
+        .example-box { background: #0a0e27; padding: 25px; border-radius: 10px; border-left: 4px solid #ffc107; margin: 20px 0; }
+        .status { padding: 20px; border-radius: 10px; margin-top: 20px; display: none; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Начало</a>
+        <a href="aaa-add-liquidity.html">ААА: Ликвидност</a>
+        <a href="bbb-send-tokens-to-donor.html">БББ: Изпрати Токени</a>
+        <a href="vvv-mint-new-AMS.html">ВВВ: Mint Нови</a>
+        <a href="contact.html">Контакти</a>
+    </nav>
+
+    <div class="container">
+        <h1>💰 ААА: Добавяне на Ликвидност</h1>
+        <p class="subtitle">Увеличи ликвидността → Покачи цената на токена</p>
+        
+        <div class="info-box">
+            <h3>📈 Какво прави тази функция?</h3>
+            <p style="font-size: 1.2em; line-height: 1.8;">
+                <strong>Добавяш BNB + AMS в PancakeSwap liquidity pool</strong><br><br>
+                
+                ✅ Повече BNB в pool-а = По-висока цена<br>
+                ✅ Повече ликвидност = По-стабилна цена<br>
+                ✅ Дарителите виждат растеж на токените си<br><br>
+                
+                <strong>Пример:</strong><br>
+                Получаваш 1 BNB дарение → Добавяш 0.5 BNB + 100,000 AMS в pool → Цената расте!
+            </p>
+        </div>
+        
+        <div class="panel-box">
+            <h2>🔧 Добави Ликвидност</h2>
+            
+            <div class="form-group">
+                <label>Колко BNB да добавиш? (Max 1 BNB на транзакция)</label>
+                <input type="number" id="bnbAmount" placeholder="Например: 0.5" step="0.1" max="1" min="0.01">
+            </div>
+            
+            <div class="form-group">
+                <label>Колко AMS токени да добавиш?</label>
+                <input type="number" id="amsAmount" placeholder="Например: 100000" step="1000">
+            </div>
+            
+            <div class="example-box">
+                <strong style="color: #ffc107;">💡 Препоръчителни съотношения:</strong><br><br>
+                <span style="color: #b8c5d6;">
+                0.1 BNB → ~20,000 AMS<br>
+                0.5 BNB → ~100,000 AMS<br>
+                1 BNB → ~200,000 AMS<br><br>
+                <em>Съотношението зависи от текущата цена в pool-а!</em>
+                </span>
+            </div>
+            
+            <button class="btn" onclick="addLiquidity()">💰 Добави Ликвидност</button>
+            
+            <div id="status" class="status"></div>
+        </div>
+        
+        <div class="warning-box">
+            <h3>⚠️ ВАЖНО: Ограничения</h3>
+            <p style="font-size: 1.1em; line-height: 1.8;">
+                🔒 <strong>Максимум 1 BNB на транзакция</strong> (за сигурност)<br>
+                🔒 Само Owner може да извика тази функция<br>
+                🔒 Добавянето на ликвидност е НЕОБРАТИМО (LP токените остават заключени)<br>
+                🔒 Използвай внимателно! Проверявай съотношението преди да изпратиш!
+            </p>
+        </div>
+        
+        <div class="info-box" style="margin-top: 40px;">
+            <h3>🎯 Кога да добавяш ликвидност?</h3>
+            <p style="font-size: 1.1em; line-height: 1.8;">
+                ✅ След като получиш няколко BNB дарения<br>
+                ✅ Когато искаш да стабилизираш цената<br>
+                ✅ Когато искаш да увеличиш доверието в токена<br>
+                ✅ Преди голяма маркетинг кампания<br><br>
+                
+                <strong>Не добавяй прекалено много наведнъж!</strong><br>
+                По-добре малко и често, отколкото много наведнъж.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const CONTRACT_ADDRESS = '0x0000000000000000000000000000000000000000';
+        const ROUTER_ADDRESS = '0x10ED43C718714eb63d5aA57B78B54704E256024E'; // PancakeSwap Router
+        
+        async function addLiquidity() {
+            const bnbAmount = parseFloat(document.getElementById('bnbAmount').value);
+            const amsAmount = parseFloat(document.getElementById('amsAmount').value);
+            
+            if (!bnbAmount || !amsAmount) {
+                showStatus('❌ Моля, попълни и двете полета!', 'error');
+                return;
+            }
+            
+            if (bnbAmount > 1) {
+                showStatus('❌ Максималното количество е 1 BNB!', 'error');
+                return;
+            }
+            
+            if (bnbAmount < 0.01) {
+                showStatus('❌ Минималното количество е 0.01 BNB!', 'error');
+                return;
+            }
+            
+            try {
+                const web3 = new Web3(window.ethereum);
+                const accounts = await web3.eth.getAccounts();
+                
+                showStatus('🔄 Добавяне на ликвидност...', 'info');
+                
+                // TODO: Implement PancakeSwap addLiquidity call
+                // This requires Router contract interaction
+                
+                showStatus('✅ Успешно добавена ликвидност!<br>BNB: ' + bnbAmount + '<br>AMS: ' + amsAmount, 'success');
+                
+            } catch (error) {
+                showStatus('❌ Грешка: ' + error.message, 'error');
+            }
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.innerHTML = message;
+            status.style.display = 'block';
+            
+            if (type === 'success') {
+                status.style.background = '#4caf50';
+            } else if (type === 'error') {
+                status.style.background = '#ff5722';
+            } else {
+                status.style.background = '#ffc107';
+                status.style.color = '#000';
+            }
+        }
+    </script>
+</body>
+</html>

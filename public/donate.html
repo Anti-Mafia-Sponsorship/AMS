@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMS Token - Дарявай Сега</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0a0e27; color: #fff; }
+        nav { background: #1a1f3a; padding: 20px; text-align: center; }
+        nav a { color: #667eea; text-decoration: none; margin: 0 15px; font-size: 1.1em; }
+        nav a:hover { color: #fff; }
+        .container { max-width: 1000px; margin: 60px auto; padding: 40px; }
+        h1 { font-size: 3em; color: #667eea; text-align: center; margin-bottom: 50px; }
+        .donate-box { background: #1a1f3a; padding: 40px; border-radius: 20px; margin: 30px 0; }
+        .donate-box h2 { color: #ffc107; font-size: 2em; margin-bottom: 20px; }
+        .donate-box p { color: #b8c5d6; line-height: 1.8; margin-bottom: 15px; }
+        .form-group { margin: 20px 0; }
+        .form-group label { display: block; color: #667eea; font-size: 1.2em; margin-bottom: 10px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 15px; border-radius: 10px; border: 2px solid #667eea; background: #0a0e27; color: #fff; font-size: 1.1em; }
+        .form-group input:focus, .form-group textarea:focus { border-color: #ffc107; outline: none; }
+        .form-group small { color: #b8c5d6; font-size: 0.9em; margin-top: 5px; display: block; }
+        .optional-tag { color: #ffc107; font-size: 0.9em; font-weight: normal; }
+        .btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 50px; border-radius: 50px; font-size: 1.3em; font-weight: bold; border: none; cursor: pointer; transition: transform 0.3s; width: 100%; }
+        .btn:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .info-box { background: #4caf50; color: #fff; padding: 30px; border-radius: 15px; margin: 30px 0; }
+        .warning-box { background: #ff5722; color: #fff; padding: 30px; border-radius: 15px; margin: 30px 0; }
+        .danger-box { background: #f44336; color: #fff; padding: 30px; border-radius: 15px; margin: 30px 0; border: 3px solid #fff; }
+        .timeout-box { background: #ffc107; color: #000; padding: 30px; border-radius: 15px; margin: 30px 0; font-weight: bold; }
+        .wallet-address { background: #0a0e27; padding: 20px; border-radius: 10px; font-family: 'Courier New', monospace; word-break: break-all; margin: 20px 0; font-size: 1.1em; border: 2px solid #667eea; }
+        .checkbox-group { display: flex; align-items: flex-start; margin: 25px 0; }
+        .checkbox-group input[type="checkbox"] { width: 25px; height: 25px; margin-right: 15px; margin-top: 3px; flex-shrink: 0; }
+        .checkbox-group label { font-size: 1em; color: #b8c5d6; line-height: 1.6; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Начало</a>
+        <a href="connect.html">Свържи Wallet</a>
+        <a href="rules.html">Правила</a>
+        <a href="donate.html">Дарявай</a>
+        <a href="contact.html">Контакти</a>
+    </nav>
+
+    <div class="container">
+        <h1>💰 Дарявай Сега</h1>
+        
+        <div class="danger-box">
+            <h3 style="font-size: 2em;">⚠️ ВАЖНО: Контактна Информация</h3>
+            <p style="font-size: 1.3em; line-height: 2;">
+                <strong>Силно препоръчваме да предоставиш контактна информация!</strong><br><br>
+                
+                ✅ <strong>Ако предоставиш контакти:</strong><br>
+                • Можем да те информираме за статуса на дарението<br>
+                • Можем да ти помогнем при технически проблеми<br>
+                • Можем да те уведомим за специални бонуси<br>
+                • Получаваш потвърждение по имейл<br><br>
+                
+                ❌ <strong>Ако НЕ предоставиш контакти:</strong><br>
+                • При грешка в транзакцията НЯМА как да те намерим<br>
+                • Няма как да ти изпратим токени ръчно при проблем<br>
+                • Няма как да те уведомим за важни промени<br>
+                • Губиш право на бонуси и специални награди<br><br>
+                
+                <strong style="color: #fff; font-size: 1.4em;">РЕШЕНИЕТО Е ТВОЕ!</strong><br>
+                Можеш да останеш анонимен, но поемаш риска!
+            </p>
+        </div>
+        
+        <div class="timeout-box">
+            <h3>⏳ ВАЖНО: Таймаут при Получаване на Токени</h3>
+            <p style="font-size: 1.2em; line-height: 1.8;">
+                🕐 <strong>Базов таймаут:</strong> 12 часа между изпращания<br>
+                ⚡ <strong>Ускорен таймаут:</strong> 30 минути (когато в опашката има 1000+ дарители)<br><br>
+                
+                🎯 <strong>Защо има таймаут?</strong><br>
+                Защита от хакери! Ако някой хакне системата, може да изпрати максимум 1000 AMS на 12 часа (или на 30 мин при ускорение).
+                С таймаут са защитени всички дарители! 🛡️
+            </p>
+        </div>
+        
+        <div class="donate-box">
+            <h2>🎁 Вариант А: Ръчно Дарение (Гъвкаво)</h2>
+            <p><strong>Как работи:</strong></p>
+            <ol style="margin-left: 20px; color: #b8c5d6; line-height: 1.8;">
+                <li>Попълваш контактната форма по-долу</li>
+                <li>Изпращаш BNB директно към creator wallet-а</li>
+                <li>Формата автоматично изпраща имейл до creator-а с твоите данни</li>
+                <li>Creator ръчно решава колко токени (100-1000 AMS в зависимост от сумата)</li>
+                <li>Получаваш токени в рамките на 12 часа (или 30 мин при ускорение)</li>
+            </ol>
+            
+            <div class="wallet-address">
+                <strong>Creator/Donation Wallet Address:</strong><br>
+                0x0000000000000000000000000000000000000000
+                <br><small>(Ще бъде обновен след deployment)</small>
+            </div>
+            
+            <h3 style="color: #667eea; margin-top: 40px; margin-bottom: 20px;">📝 Контактна Форма за Вариант А</h3>
+            
+            <div class="form-group">
+                <label>Име и Фамилия <span class="optional-tag">(по желание)</span></label>
+                <input type="text" id="donorNameA" placeholder="Не е задължително, но препоръчително">
+                <small>Ако не желаеш да предоставиш истинско име, можеш да напишеш псевдоним или да оставиш празно.</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Email адрес <span class="optional-tag">(по желание, но СИЛНО препоръчителен!)</span></label>
+                <input type="email" id="donorEmailA" placeholder="your-email@example.com">
+                <small>⚠️ БЕЗ email няма как да те информираме за статуса или да помогнем при проблем!</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Телефон <span class="optional-tag">(по желание)</span></label>
+                <input type="tel" id="donorPhoneA" placeholder="+359 XXX XXX XXX">
+                <small>За спешни случаи или допълнителна верификация.</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Адрес на твоя Wallet <strong style="color: #ffc107;">(ЗАДЪЛЖИТЕЛНО)</strong></label>
+                <input type="text" id="walletAddressA" placeholder="0x..." required>
+                <small>⚠️ Внимателно провери адреса! На този адрес ще получиш токените.</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Колко BNB изпрати?</label>
+                <input type="number" id="bnbAmountA" placeholder="Например: 0.1" step="0.001" min="0.001">
+                <small>За наша информация. Ще проверим транзакцията.</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Допълнителни бележки <span class="optional-tag">(по желание)</span></label>
+                <textarea id="notesA" rows="4" placeholder="Имаш ли специални искания? Коментари?"></textarea>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="consentA" required>
+                <label for="consentA">
+                    <strong>Съгласявам се</strong> предоставените данни да бъдат съхранявани и използвани за целите на изпращането на AMS токени. 
+                    Разбирам, че данните ми ще бъдат третирани конфиденциално и няма да бъдат споделяни с трети страни.
+                </label>
+            </div>
+            
+            <button class="btn" onclick="submitManualDonation()">📧 Изпрати Информация</button>
+            
+            <div id="statusA" style="margin-top: 20px; padding: 20px; border-radius: 10px; display: none;"></div>
+            
+            <div class="info-box" style="margin-top: 30px;">
+                <h3>✅ Предимства на Вариант А:</h3>
+                <p>💰 Гъвкавост - Creator може да даде повече токени за по-големи дарения</p>
+                <p>🎁 Бонуси - Ранните дарители могат да получат повече</p>
+                <p>📧 Личен контакт - Директна комуникация с creator-а</p>
+            </div>
+        </div>
+        
+        <div class="donate-box">
+            <h2>🚀 Вариант Б: Автоматично Дарение (Бързо)</h2>
+            <p><strong>Как работи:</strong></p>
+            <ol style="margin-left: 20px; color: #b8c5d6; line-height: 1.8;">
+                <li>Попълваш контактната форма по-долу</li>
+                <li>Свързваш wallet-а си (MetaMask, Trust Wallet, и др.)</li>
+                <li>Избираш колко BNB да дарявате (min 0.001 BNB)</li>
+                <li>Натискаш "Дари" и потвърждаваш транзакцията</li>
+                <li>Автоматично влизаш в опашка</li>
+                <li>Получаваш токени пропорционално: <strong>1000 AMS за 1 BNB</strong></li>
+            </ol>
+            
+            <h3 style="color: #667eea; margin-top: 40px; margin-bottom: 20px;">📝 Контактна Форма за Вариант Б</h3>
+            
+            <div class="form-group">
+                <label>Име и Фамилия <span class="optional-tag">(по желание)</span></label>
+                <input type="text" id="donorNameB" placeholder="Не е задължително, но препоръчително">
+                <small>Можеш да останеш анонимен, но при проблем няма как да те намерим.</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Email адрес <span class="optional-tag">(по желание, но СИЛНО препоръчителен!)</span></label>
+                <input type="email" id="donorEmailB" placeholder="your-email@example.com">
+                <small>⚠️ БЕЗ email няма как да получиш потвърждение или помощ при проблем!</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Телефон <span class="optional-tag">(по желание)</span></label>
+                <input type="tel" id="donorPhoneB" placeholder="+359 XXX XXX XXX">
+            </div>
+            
+            <div class="form-group">
+                <label>Колко BNB искаш да дарявате?</label>
+                <input type="number" id="bnbAmount" placeholder="Минимум 0.001 BNB" step="0.001" min="0.001">
+                <small>Wallet адресът ще бъде взет автоматично от свързаният wallet.</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Ще получиш (приблизително):</label>
+                <input type="text" id="expectedTokens" readonly placeholder="Изчислява се автоматично...">
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="consentB" required>
+                <label for="consentB">
+                    <strong>Съгласявам се</strong> предоставените данни да бъдат съхранявани и използвани за целите на изпращането на AMS токени. 
+                    Разбирам, че данните ми ще бъдат третирани конфиденциално.
+                </label>
+            </div>
+            
+            <button class="btn" id="donateBtn" onclick="donateAuto()">💎 Дари Автоматично</button>
+            
+            <div id="statusB" style="margin-top: 20px; padding: 20px; border-radius: 10px; display: none;"></div>
+            
+            <div class="warning-box" style="margin-top: 30px;">
+                <h3>⚠️ Важно за Вариант Б:</h3>
+                <p>🔄 Влизаш в опашка - може да чакаш до 12 часа (или 30 мин при ускорение)</p>
+                <p>💰 Количеството е фиксирано: 1000 AMS за 1 BNB (пропорционално)</p>
+                <p>📧 Creator получава автоматично email за дарението ти</p>
+                <p>🎯 Първите в опашката получават първи!</p>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h3>🎯 Коя опция да избереш?</h3>
+            <p style="font-size: 1.2em; line-height: 1.8;">
+                <strong>Избери Вариант А (Ръчно) ако:</strong><br>
+                ✅ Искаш да общуваш директно с creator-а<br>
+                ✅ Дарявате голяма сума (може да получиш повече токени)<br>
+                ✅ Си сред първите дарители (бонуси)<br><br>
+                
+                <strong>Избери Вариант Б (Автоматично) ако:</strong><br>
+                ✅ Искаш бързина и удобство<br>
+                ✅ Не искаш да изпращаш имейли<br>
+                ✅ Искаш гаранция за фиксирано количество (1000 AMS/BNB)<br>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const CONTRACT_ADDRESS = 'YOUR_CONTRACT_ADDRESS_HERE'; // След deployment
+        const CREATOR_EMAIL_API = '/api/send-donation-email'; // Backend endpoint
+        
+        let web3;
+        let account;
+        
+        // Calculate expected tokens for Variant B
+        document.getElementById('bnbAmount').addEventListener('input', function() {
+            const bnb = parseFloat(this.value) || 0;
+            const tokens = bnb * 1000;
+            document.getElementById('expectedTokens').value = tokens.toFixed(2) + ' AMS';
+        });
+        
+        // ВАРИАНТ А: Manual Donation
+        async function submitManualDonation() {
+            const name = document.getElementById('donorNameA').value.trim();
+            const email = document.getElementById('donorEmailA').value.trim();
+            const phone = document.getElementById('donorPhoneA').value.trim();
+            const wallet = document.getElementById('walletAddressA').value.trim();
+            const bnbAmount = parseFloat(document.getElementById('bnbAmountA').value);
+            const notes = document.getElementById('notesA').value.trim();
+            const consent = document.getElementById('consentA').checked;
+            
+            // Validation
+            if (!wallet || !wallet.startsWith('0x') || wallet.length !== 42) {
+                showStatusA('❌ Невалиден wallet адрес! Трябва да започва с 0x и да е 42 символа.', 'error');
+                return;
+            }
+            
+            if (!bnbAmount || bnbAmount < 0.001) {
+                showStatusA('❌ Моля, въведи колко BNB си изпратил!', 'error');
+                return;
+            }
+            
+            if (!consent) {
+                showStatusA('❌ Моля, отбележи че се съгласяваш с условията!', 'error');
+                return;
+            }
+            
+            // Warning if no email
+            if (!email) {
+                const confirmNoEmail = confirm(
+                    '⚠️ ВНИМАНИЕ!\n\n' +
+                    'Не си предоставил email адрес.\n\n' +
+                    'При проблем с транзакцията НЯМА как да те намерим!\n\n' +
+                    'Сигурен ли си, че искаш да продължиш БЕЗ email?'
+                );
+                if (!confirmNoEmail) return;
+            }
+            
+            try {
+                showStatusA('📧 Изпращане на информация...', 'info');
+                
+                // Send to backend
+                const response = await fetch(CREATOR_EMAIL_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        variant: 'A',
+                        name: name || 'Анонимен',
+                        email: email || 'Не е предоставен',
+                        phone: phone || 'Не е предоставен',
+                        walletAddress: wallet,
+                        bnbAmount: bnbAmount,
+                        notes: notes || 'Няма',
+                        timestamp: new Date().toISOString()
+                    })
+                });
+                
+                if (response.ok) {
+                    showStatusA(
+                        `✅ Успешно изпратена информация!<br><br>` +
+                        `Creator-ът ще провери транзакцията и ще ти изпрати токени в рамките на 12 часа (или 30 минути при ускорение).<br><br>` +
+                        (email ? `Ще получиш потвърждение на ${email}` : `⚠️ Не си предоставил email - няма да получиш потвърждение!`),
+                        'success'
+                    );
+                    
+                    // Clear form
+                    document.getElementById('donorNameA').value = '';
+                    document.getElementById('donorEmailA').value = '';
+                    document.getElementById('donorPhoneA').value = '';
+                    document.getElementById('walletAddressA').value = '';
+                    document.getElementById('bnbAmountA').value = '';
+                    document.getElementById('notesA').value = '';
+                    document.getElementById('consentA').checked = false;
+                } else {
+                    showStatusA('❌ Грешка при изпращане. Моля, опитай отново или пиши на donate@ams-token.org', 'error');
+                }
+                
+            } catch (error) {
+                showStatusA('❌ Грешка: ' + error.message, 'error');
+            }
+        }
+        
+        // ВАРИАНТ Б: Auto Donation
+        async function donateAuto() {
+            // Check wallet connection
+            if (!localStorage.getItem('walletConnected')) {
+                alert('⚠️ Моля, първо свържи wallet-а си!');
+                window.location.href = 'connect.html';
+                return;
+            }
+            
+            const name = document.getElementById('donorNameB').value.trim();
+            const email = document.getElementById('donorEmailB').value.trim();
+            const phone = document.getElementById('donorPhoneB').value.trim();
+            const bnbAmount = parseFloat(document.getElementById('bnbAmount').value);
+            const consent = document.getElementById('consentB').checked;
+            
+            if (!bnbAmount || bnbAmount < 0.001) {
+                showStatusB('❌ Минималното дарение е 0.001 BNB', 'error');
+                return;
+            }
+            
+            if (!consent) {
+                showStatusB('❌ Моля, отбележи че се съгласяваш с условията!', 'error');
+                return;
+            }
+            
+            // Warning if no email
+            if (!email) {
+                const confirmNoEmail = confirm(
+                    '⚠️ ВНИМАНИЕ!\n\n' +
+                    'Не си предоставил email адрес.\n\n' +
+                    'Няма да получиш потвърждение и при проблем няма как да те намерим!\n\n' +
+                    'Сигурен ли си, че искаш да продължиш БЕЗ email?'
+                );
+                if (!confirmNoEmail) return;
+            }
+            
+            try {
+                web3 = new Web3(window.ethereum);
+                account = localStorage.getItem('walletAddress');
+                
+                showStatusB('🔄 Изпращане на транзакция...', 'info');
+                document.getElementById('donateBtn').disabled = true;
+                
+                const amountWei = web3.utils.toWei(bnbAmount.toString(), 'ether');
+                
+                // Send BNB to contract
+                const tx = await web3.eth.sendTransaction({
+                    from: account,
+                    to: CONTRACT_ADDRESS,
+                    value: amountWei
+                });
+                
+                showStatusB(`✅ Транзакцията е успешна! Влязъл си в опашка.<br>TX: ${tx.transactionHash}`, 'success');
+                
+                // Send donor info to backend
+                await fetch(CREATOR_EMAIL_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        variant: 'B',
+                        name: name || 'Анонимен',
+                        email: email || 'Не е предоставен',
+                        phone: phone || 'Не е предоставен',
+                        walletAddress: account,
+                        bnbAmount: bnbAmount,
+                        txHash: tx.transactionHash,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+                
+                showStatusB(
+                    `✅ Успешно! Влязъл си в опашка.<br><br>` +
+                    `Ще получиш ${(bnbAmount * 1000).toFixed(2)} AMS в рамките на 12 часа (или 30 мин).<br><br>` +
+                    `Транзакция: <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="color: #fff;">${tx.transactionHash.substring(0, 10)}...</a><br><br>` +
+                    (email ? `Ще получиш потвърждение на ${email}` : `⚠️ Не си предоставил email!`),
+                    'success'
+                );
+                
+            } catch (error) {
+                showStatusB('❌ Грешка: ' + error.message, 'error');
+            } finally {
+                document.getElementById('donateBtn').disabled = false;
+            }
+        }
+        
+        function showStatusA(message, type) {
+            const status = document.getElementById('statusA');
+            status.innerHTML = message;
+            status.style.display = 'block';
+            
+            if (type === 'success') {
+                status.style.background = '#4caf50';
+            } else if (type === 'error') {
+                status.style.background = '#ff5722';
+            } else {
+                status.style.background = '#ffc107';
+                status.style.color = '#000';
+            }
+        }
+        
+        function showStatusB(message, type) {
+            const status = document.getElementById('statusB');
+            status.innerHTML = message;
+            status.style.display = 'block';
+            
+            if (type === 'success') {
+                status.style.background = '#4caf50';
+            } else if (type === 'error') {
+                status.style.background = '#ff5722';
+            } else {
+                status.style.background = '#ffc107';
+                status.style.color = '#000';
+            }
+        }
+    </script>
+</body>
+</html>

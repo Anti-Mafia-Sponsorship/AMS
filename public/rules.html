@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMS Token - Правила за Търговия</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0a0e27; color: #fff; }
+        nav { background: #1a1f3a; padding: 20px; text-align: center; }
+        nav a { color: #667eea; text-decoration: none; margin: 0 15px; font-size: 1.1em; }
+        nav a:hover { color: #fff; }
+        .container { max-width: 1200px; margin: 60px auto; padding: 40px; }
+        h1 { font-size: 3em; color: #667eea; text-align: center; margin-bottom: 50px; }
+        .rule-card { background: #1a1f3a; padding: 40px; border-radius: 20px; margin: 30px 0; border-left: 5px solid #667eea; }
+        .rule-card h2 { color: #ffc107; font-size: 2em; margin-bottom: 20px; }
+        .rule-card p { color: #b8c5d6; line-height: 1.8; margin-bottom: 15px; font-size: 1.1em; }
+        .warning-box { background: #ff5722; color: #fff; padding: 30px; border-radius: 15px; margin: 40px 0; }
+        .info-box { background: #4caf50; color: #fff; padding: 30px; border-radius: 15px; margin: 40px 0; }
+        table { width: 100%; background: #1a1f3a; border-radius: 10px; margin: 30px 0; border-collapse: collapse; overflow: hidden; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #667eea; }
+        th { background: #667eea; color: #fff; font-size: 1.1em; font-weight: bold; }
+        td { color: #b8c5d6; font-size: 1em; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background: rgba(102, 126, 234, 0.1); }
+        .table-title { font-size: 2em; color: #667eea; margin: 50px 0 20px 0; text-align: center; }
+        .emoji-icon { font-size: 1.5em; margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Начало</a>
+        <a href="connect.html">Свържи Wallet</a>
+        <a href="rules.html">Правила</a>
+        <a href="donate.html">Дарявай</a>
+        <a href="contact.html">Контакти</a>
+    </nav>
+
+    <div class="container">
+        <h1>📜 Правила за Търговия и Функциониране</h1>
+        
+        <div class="warning-box">
+            <h3 style="font-size: 2em;">⚠️ ВАЖНО: Търговията Е ОГРАНИЧЕНА!</h3>
+            <p style="font-size: 1.2em; line-height: 1.8;">
+                AMS Token има уникална схема за търговия с цел защита на дарителите и растеж на цената. 
+                Прочети внимателно правилата, за да разбереш кога и как можеш да продаваш!
+            </p>
+        </div>
+
+        <h2 class="table-title">📊 ТАБЛИЦА: Правомощия на Донори по Периоди</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Период</th>
+                    <th>Trading на PancakeSwap</th>
+                    <th>Transfer между портфейли</th>
+                    <th>Sell Limit</th>
+                    <th>Sell Tax</th>
+                    <th>Може ли да дарява?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Първи месец (0-30 дни)</strong></td>
+                    <td>❌ DISABLED</td>
+                    <td>❌ DISABLED</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>✅ ДА</td>
+                </tr>
+                <tr>
+                    <td><strong>Месеци 1-24 (Акумулация)</strong></td>
+                    <td>❌ DISABLED</td>
+                    <td>❌ DISABLED</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>✅ ДА</td>
+                </tr>
+                <tr style="background: rgba(76, 175, 80, 0.2);">
+                    <td><strong>60 дни след 24-я месец (UNLOCK #1)</strong></td>
+                    <td>✅ ENABLED</td>
+                    <td>✅ ENABLED</td>
+                    <td>1000 AMS/седмица</td>
+                    <td>0.02%</td>
+                    <td>✅ ДА</td>
+                </tr>
+                <tr>
+                    <td><strong>Месеци 26-48 (Акумулация)</strong></td>
+                    <td>❌ DISABLED</td>
+                    <td>❌ DISABLED</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>✅ ДА</td>
+                </tr>
+                <tr style="background: rgba(76, 175, 80, 0.2);">
+                    <td><strong>120 дни след 48-я месец (UNLOCK #2)</strong></td>
+                    <td>✅ ENABLED</td>
+                    <td>✅ ENABLED</td>
+                    <td>1000 AMS/седмица</td>
+                    <td>0.02%</td>
+                    <td>✅ ДА</td>
+                </tr>
+                <tr>
+                    <td><strong>Месеци 52-72 (Акумулация)</strong></td>
+                    <td>❌ DISABLED</td>
+                    <td>❌ DISABLED</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>✅ ДА</td>
+                </tr>
+                <tr style="background: rgba(76, 175, 80, 0.2);">
+                    <td><strong>180 дни след 72-я месец (UNLOCK #3)</strong></td>
+                    <td>✅ ENABLED</td>
+                    <td>✅ ENABLED</td>
+                    <td>1000 AMS/седмица</td>
+                    <td>0.02%</td>
+                    <td>✅ ДА</td>
+                </tr>
+                <tr>
+                    <td><strong>След 78+ месеца (нечетни месеци)</strong></td>
+                    <td>✅ ENABLED</td>
+                    <td>✅ ENABLED</td>
+                    <td>1000 AMS/седмица</td>
+                    <td>0.02%</td>
+                    <td>✅ ДА</td>
+                </tr>
+                <tr>
+                    <td><strong>След 78+ месеца (четни месеци)</strong></td>
+                    <td>❌ DISABLED</td>
+                    <td>❌ DISABLED</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>✅ ДА</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="info-box">
+            <p style="font-size: 1.2em; line-height: 1.8;">
+                <strong>📌 Важна Забележка:</strong><br>
+                ✅ Донорите могат да ДАРЯВЯТ ВИНАГИ, независимо от периода!<br>
+                ✅ Sell limit от 1000 AMS/седмица е ЗАВИНАГИ!<br>
+                ✅ Зелените редове показват кога МОЖЕш да продаваш/прехвърляш
+            </p>
+        </div>
+
+        <h2 class="table-title">💰 ВАРИАНТ А: Ръчно Дарение - Стъпка по Стъпка</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 10%;">Стъпка</th>
+                    <th style="width: 50%;">Какво се случва</th>
+                    <th style="width: 40%;">Препоръки</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1</strong></td>
+                    <td>Донорът изпраща BNB директно към Owner wallet</td>
+                    <td>Провери внимателно адреса преди изпращане!</td>
+                </tr>
+                <tr>
+                    <td><strong>2</strong></td>
+                    <td>Донорът изпраща подробен имейл до donate@ams-token.org</td>
+                    <td><strong>Съвет:</strong> В имейла включи:<br>
+                    • Адрес на твоя портфейл<br>
+                    • Твоите имена (или псевдоним)<br>
+                    • Телефон за връзка<br>
+                    • Сума на дарението в BNB<br>
+                    • Transaction Hash (TX)<br><br>
+                    <em>Ако желаеш да останеш анонимен, можеш да не предоставяш тези данни, но при проблем няма да можем да ти помогнем!</em></td>
+                </tr>
+                <tr>
+                    <td><strong>3</strong></td>
+                    <td>Owner получава имейл и проверява транзакцията в blockchain</td>
+                    <td>Обикновено обработваме в рамките на 12 часа</td>
+                </tr>
+                <tr>
+                    <td><strong>4</strong></td>
+                    <td>Owner решава количество токени (100-1000 AMS) въз основа на сумата и периода</td>
+                    <td>Ранните дарители и по-големите суми получават ПОВЕЧЕ токени</td>
+                </tr>
+                <tr>
+                    <td><strong>5</strong></td>
+                    <td>Owner изпраща токените към портфейла на донора</td>
+                    <td>Timeout: 12 часа между изпращания (или 30 мин при ускорение)</td>
+                </tr>
+                <tr>
+                    <td><strong>6</strong></td>
+                    <td>Донорът получава токените в своя портфейл</td>
+                    <td>Провери баланса си в MetaMask/Trust Wallet</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="table-title">🚀 ВАРИАНТ Б: Автоматично Дарение - Стъпка по Стъпка</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 10%;">Стъпка</th>
+                    <th style="width: 50%;">Какво се случва</th>
+                    <th style="width: 40%;">Препоръки</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1</strong></td>
+                    <td>Донорът отваря страницата donate.html и попълва контактната форма</td>
+                    <td><strong>Важно:</strong> Предоставянето на реални данни (име, имейл, телефон) е за ТВОЯ защита!<br><br>
+                    Тези данни НИ помагат да проследим твоето дарение и да ти изпратим токените правилно.<br><br>
+                    <em style="color: #ffc107;">Ако желаеш, можеш да останеш анонимен и да предоставиш фалшиви данни, но НИЕ НЕ носим отговорност при загуба на токени поради липса на контактна информация!</em></td>
+                </tr>
+                <tr>
+                    <td><strong>2</strong></td>
+                    <td>Донорът свързва wallet (MetaMask/Trust Wallet) със сайта</td>
+                    <td>Адресът на портфейла се взима автоматично</td>
+                </tr>
+                <tr>
+                    <td><strong>3</strong></td>
+                    <td>Донорът избира сума BNB и натiska "Дари"</td>
+                    <td>Минимум: 0.001 BNB</td>
+                </tr>
+                <tr>
+                    <td><strong>4</strong></td>
+                    <td>Транзакцията се изпраща към smart contract</td>
+                    <td>Contract автоматично записва в donation queue</td>
+                </tr>
+                <tr>
+                    <td><strong>5</strong></td>
+                    <td>Contract изчислява количество токени (1000 AMS за 1 BNB - фиксирано съотношение)</td>
+                    <td>Количеството е пропорционално на дарението</td>
+                </tr>
+                <tr>
+                    <td><strong>6</strong></td>
+                    <td>Owner получава автоматичен имейл с данните на донора</td>
+                    <td>Включва: адрес, сума, TX hash, контакти (ако са дадени)</td>
+                </tr>
+                <tr>
+                    <td><strong>7</strong></td>
+                    <td>Owner обработва опашката - изпраща токените</td>
+                    <td>Timeout: 12 часа или 30 минути (при много дарители)</td>
+                </tr>
+                <tr>
+                    <td><strong>8</strong></td>
+                    <td>Донорът получава токените + email потвърждение (ако е дал email)</td>
+                    <td>Първите в опашката получават първи!</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="table-title">📈 ТАБЛИЦА: Кога РАСТЕ/ПАДА Цената на AMS</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Действие</th>
+                    <th style="width: 20%;">Ефект върху цената</th>
+                    <th style="width: 30%;">Обяснение</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background: rgba(76, 175, 80, 0.1);">
+                    <td>Owner добавя BNB в ликвидност (AAA)</td>
+                    <td><span class="emoji-icon">🔼</span><strong style="color: #4caf50;">РАСТЕ</strong></td>
+                    <td>Повече BNB в pool = по-висока цена</td>
+                </tr>
+                <tr style="background: rgba(255, 87, 34, 0.1);">
+                    <td>Owner добавя AMS токени в ликвидност</td>
+                    <td><span class="emoji-icon">🔽</span><strong style="color: #ff5722;">ПАДА</strong></td>
+                    <td>Повече AMS в pool = по-ниска цена</td>
+                </tr>
+                <tr style="background: rgba(255, 87, 34, 0.1);">
+                    <td>Owner прави Mint за ликвидност (VVV)</td>
+                    <td><span class="emoji-icon">🔽</span><strong style="color: #ff5722;">ПАДА</strong></td>
+                    <td>Supply расте = цената пада</td>
+                </tr>
+                <tr style="background: rgba(76, 175, 80, 0.1);">
+                    <td>Owner прави Scheduled Burn</td>
+                    <td><span class="emoji-icon">🔼</span><strong style="color: #4caf50;">РАСТЕ</strong></td>
+                    <td>Supply намалява = цената расте</td>
+                </tr>
+                <tr style="background: rgba(76, 175, 80, 0.1);">
+                    <td>Owner прави Manual Burn</td>
+                    <td><span class="emoji-icon">🔼</span><strong style="color: #4caf50;">РАСТЕ</strong></td>
+                    <td>Supply намалява = цената расте</td>
+                </tr>
+                <tr>
+                    <td>Owner изпраща токени (БББ/ГГГ)</td>
+                    <td><span class="emoji-icon">➡️</span><strong>БЕЗ ЕФЕКТ</strong></td>
+                    <td>Само преместване, supply не се променя</td>
+                </tr>
+                <tr style="background: rgba(76, 175, 80, 0.1);">
+                    <td>Донор купува AMS (PancakeSwap)</td>
+                    <td><span class="emoji-icon">🔼</span><strong style="color: #4caf50;">РАСТЕ</strong></td>
+                    <td>Повече BNB в pool, по-малко AMS</td>
+                </tr>
+                <tr style="background: rgba(255, 87, 34, 0.1);">
+                    <td>Донор продава AMS (PancakeSwap)</td>
+                    <td><span class="emoji-icon">🔽</span><strong style="color: #ff5722;">ПАДА</strong></td>
+                    <td>По-малко BNB в pool, повече AMS</td>
+                </tr>
+                <tr>
+                    <td>Донор прехвърля AMS на друг портфейл</td>
+                    <td><span class="emoji-icon">➡️</span><strong>БЕЗ ЕФЕКТ</strong></td>
+                    <td>Само преместване между портфейли</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="table-title">⏳ ТАБЛИЦА: Timeout Механизъм при Изпращане на Токени</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Условие</th>
+                    <th style="width: 25%;">Timeout</th>
+                    <th style="width: 25%;">Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Базов режим</strong> (нормални условия)</td>
+                    <td><strong>12 часа</strong></td>
+                    <td><span style="color: #ffc107;">🕐 Стандартно</span></td>
+                </tr>
+                <tr style="background: rgba(76, 175, 80, 0.1);">
+                    <td><strong>Много дарители в опашка</strong> (над 1000 pending donations)</td>
+                    <td><strong>30 минути</strong></td>
+                    <td><span style="color: #4caf50;">⚡ Ускорен</span></td>
+                </tr>
+                <tr style="background: rgba(76, 175, 80, 0.1);">
+                    <td><strong>Висока цена на токена</strong> (цена >100x от началната)</td>
+                    <td><strong>30 минути</strong></td>
+                    <td><span style="color: #4caf50;">⚡ Ускорен</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="info-box">
+            <h3 style="font-size: 1.5em; margin-bottom: 15px;">🔄 Динамичен Timeout</h3>
+            <p style="font-size: 1.1em; line-height: 1.8;">
+                <strong>Timeout-ът се изчислява ДИНАМИЧНО при всяко изпращане:</strong><br><br>
+                
+                ✅ Ако цената ПАДНЕ обратно → Timeout се връща на 12 часа<br>
+                ✅ Ако броят дарители НАМАЛЕЕ под 1000 → Timeout се връща на 12 часа<br>
+                ✅ Ако условията се ПРОМЕНЯТ отново → Timeout отново пада на 30 мин<br><br>
+                
+                <strong>Защо динамичен?</strong><br>
+                При висока активност или висока цена - токените се изпращат по-бързо (30 мин).<br>
+                При нормална активност - защита от злоупотреба (12 часа).
+            </p>
+        </div>
+
+        <h2 class="table-title">💸 ТАБЛИЦА: Sell Tax Механизъм</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Кой продава</th>
+                    <th>Има ли tax?</th>
+                    <th>Tax %</th>
+                    <th>Накъде отива tax-ът?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Owner</strong> (11:00-12:00 AM)</td>
+                    <td>❌ НЕ</td>
+                    <td>0%</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td><strong>Донор</strong> (в unlock период)</td>
+                    <td>✅ ДА</td>
+                    <td>0.02%</td>
+                    <td>Owner wallet (резервни токени)</td>
+                </tr>
+                <tr>
+                    <td><strong>Донор</strong> (извън unlock период)</td>
+                    <td>❌ (не може да продава)</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="warning-box" style="margin-top: 60px;">
+            <h3 style="font-size: 2em;">🎯 Стратегия за Максимална Печалба!</h3>
+            <p style="font-size: 1.2em; line-height: 1.8;">
+                ✅ Дари РАНО (първите 6 месеца получават най-много токени)<br>
+                ✅ Задръж 2 години (не се изкушавай да продаваш преди това - няма как!)<br>
+                ✅ Продавай в unlock периода (60/120/180 дни на всеки 2 години)<br>
+                ✅ ИЛИ задръж още години за АСТРОНОМИЧНА печалба!<br><br>
+                
+                💎 <strong>Търпението се възнаграждава:</strong><br>
+                🚀 След 2 години: цената може да е 10-100x по-висока!<br>
+                🌟 След 4 години: 50-500x по-висока!<br>
+                💰 След 6 години: 200-2000x по-висока!<br><br>
+                
+                <strong>При максимална цена: 1000 AMS/седмица може да са $99,400!</strong>
+            </p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 60px;">
+            <a href="donate.html" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 50px; border-radius: 50px; font-size: 1.3em; font-weight: bold; text-decoration: none;">
+                Разбрах! Дари Сега →
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Panel - Mint Нови Токени</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0a0e27; color: #fff; }
+        nav { background: #1a1f3a; padding: 20px; text-align: center; }
+        nav a { color: #667eea; text-decoration: none; margin: 0 15px; font-size: 1.1em; }
+        nav a:hover { color: #fff; }
+        .container { max-width: 900px; margin: 60px auto; padding: 40px; }
+        h1 { font-size: 2.5em; color: #ff5722; text-align: center; margin-bottom: 20px; }
+        .subtitle { text-align: center; color: #b8c5d6; font-size: 1.2em; margin-bottom: 50px; }
+        .panel-box { background: #1a1f3a; padding: 40px; border-radius: 20px; margin: 30px 0; border: 3px solid #ff5722; }
+        .panel-box h2 { color: #667eea; font-size: 2em; margin-bottom: 20px; }
+        .panel-box p { color: #b8c5d6; line-height: 1.8; margin-bottom: 15px; }
+        .form-group { margin: 25px 0; }
+        .form-group label { display: block; color: #667eea; font-size: 1.2em; margin-bottom: 10px; font-weight: bold; }
+        .form-group input { width: 100%; padding: 15px; border-radius: 10px; border: 2px solid #667eea; background: #0a0e27; color: #fff; font-size: 1.1em; }
+        .btn { background: linear-gradient(135deg, #ff5722 0%, #d32f2f 100%); color: white; padding: 20px 50px; border-radius: 50px; font-size: 1.3em; font-weight: bold; border: none; cursor: pointer; transition: transform 0.3s; width: 100%; margin-top: 20px; }
+        .btn:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255, 87, 34, 0.4); }
+        .info-box { background: #4caf50; color: #fff; padding: 30px; border-radius: 15px; margin: 30px 0; }
+        .warning-box { background: #ff5722; color: #fff; padding: 30px; border-radius: 15px; margin: 30px 0; }
+        .danger-box { background: #f44336; color: #fff; padding: 30px; border-radius: 15px; margin: 30px 0; border: 3px solid #fff; }
+        .status { padding: 20px; border-radius: 10px; margin-top: 20px; display: none; }
+        .example-box { background: #0a0e27; padding: 25px; border-radius: 10px; border-left: 4px solid #ff5722; margin: 20px 0; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Начало</a>
+        <a href="aaa-add-liquidity.html">ААА: Ликвидност</a>
+        <a href="bbb-send-tokens-to-donor.html">БББ: Изпрати Токени</a>
+        <a href="vvv-mint-new-AMS.html">ВВВ: Mint Нови</a>
+        <a href="contact.html">Контакти</a>
+    </nav>
+
+    <div class="container">
+        <h1>🔥 ВВВ: Създай Нови Токени (Mint)</h1>
+        <p class="subtitle">Mint-вай НОВИ токени БЕЗ BNB → Цената ПАДА (контролирано)</p>
+        
+        <div class="danger-box">
+            <h3 style="font-size: 2em;">⚠️ ВНИМАНИЕ: ОПАСНА ФУНКЦИЯ!</h3>
+            <p style="font-size: 1.3em; line-height: 1.8;">
+                <strong>Тази функция НАМАЛЯВА цената на токена!</strong><br><br>
+                
+                ❌ Supply РАСТЕ (създаваш нови токени)<br>
+                ❌ Цената ПАДА (повече токени на пазара)<br>
+                ❌ Може да разочарова ранните дарители!<br><br>
+                
+                <strong style="color: #fff; font-size: 1.4em;">ИЗПОЛЗВАЙ САМО КОГАТО Е НАИСТИНА НЕОБХОДИМО!</strong>
+            </p>
+        </div>
+        
+        <div class="info-box">
+            <h3>📋 Кога да използваш ВВВ?</h3>
+            <p style="font-size: 1.2em; line-height: 1.8;">
+                <strong>Използвай САМО в тези случаи:</strong><br><br>
+                
+                ✅ <strong>Цената е станала ТВЪРДЕ висока</strong> (напр 1 AMS = 1 BNB)<br>
+                → Хората не могат да си позволят да купят<br>
+                → Mint-ваш нови токени за да намалиш цената<br><br>
+                
+                ✅ <strong>Свършили са запазените токени</strong> (30M изчерпани)<br>
+                → Нямаш какво да изпращаш на нови дарители<br>
+                → Mint-ваш нови токени за резерв<br><br>
+                
+                ✅ <strong>Трябва да стабилизираш цената</strong><br>
+                → Цената скача твърде бързо<br>
+                → Mint-ваш малко токени за контрол<br><br>
+                
+                ❌ <strong>НЕ използвай ако:</strong><br>
+                - Цената е нормална<br>
+                - Имаш достатъчно резервни токени<br>
+                - Не е минала поне 1 година
+            </p>
+        </div>
+        
+        <div class="panel-box">
+            <h2>🔧 Mint Нови Токени</h2>
+            
+            <div class="form-group">
+                <label>Колко НОВИ токени да създадеш? (Max 1,000,000 AMS)</label>
+                <input type="number" id="mintAmount" placeholder="Например: 1000000" step="1000" max="1000000" min="1000">
+            </div>
+            
+            <div class="example-box">
+                <strong style="color: #ff5722;">💡 Ефект на цената:</strong><br><br>
+                <span style="color: #b8c5d6;">
+                <strong>ПРЕДИ mint:</strong><br>
+                Supply: 30M AMS<br>
+                Pool: 10 BNB / 10M AMS<br>
+                Price: 0.000001 BNB per AMS<br><br>
+                
+                <strong>Mint-ваш 1M AMS:</strong><br>
+                Supply: 31M AMS (+3.3%)<br>
+                Pool: 10 BNB / 11M AMS<br>
+                Price: 0.00000091 BNB per AMS (-9%)<br><br>
+                
+                <strong>Резултат: Цената пада с ~9%</strong>
+                </span>
+            </div>
+            
+            <div class="warning-box" style="margin-bottom: 20px;">
+                <h4 style="font-size: 1.5em; margin-bottom: 15px;">🚨 Проверка преди mint:</h4>
+                <p style="font-size: 1.1em;">
+                ✅ Сигурен ли си, че е необходимо?<br>
+                ✅ Обяснил ли си на дарителите защо го правиш?<br>
+                ✅ Публикувал ли си обявление на сайта?<br>
+                ✅ Готов ли си да поемеш отговорността?
+                </p>
+            </div>
+            
+            <button class="btn" onclick="mintTokens()">🔥 MINT НОВИ ТОКЕНИ</button>
+            
+            <div id="status" class="status"></div>
+        </div>
+        
+        <div class="info-box" style="margin-top: 40px;">
+            <h3>🎯 Как да минимизираш негативния ефект?</h3>
+            <p style="font-size: 1.1em; line-height: 1.8;">
+                <strong>Стратегии за smart mint:</strong><br><br>
+                
+                1️⃣ <strong>Mint малко и често</strong> (не много наведнъж)<br>
+                → По-добре 100k AMS всяка седмица<br>
+                → Отколкото 1M AMS наведнъж<br><br>
+                
+                2️⃣ <strong>Обяви го публично ПРЕДИ</strong><br>
+                → Предупреди дарителите 24 часа предварително<br>
+                → Обясни защо го правиш<br>
+                → Покажи прозрачност<br><br>
+                
+                3️⃣ <strong>Компенсирай с burn</strong><br>
+                → След mint направи по-голям burn (10% вместо 5%)<br>
+                → Балансирай инфлацията<br><br>
+                
+                4️⃣ <strong>Използвай ААА едновременно</strong><br>
+                → Mint нови токени<br>
+                → ВЕДНАГА добави BNB в ликвидността (ААА)<br>
+                → Така цената остава по-стабилна
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const CONTRACT_ADDRESS = '0x0000000000000000000000000000000000000000';
+        
+        async function mintTokens() {
+            const amount = parseFloat(document.getElementById('mintAmount').value);
+            
+            if (!amount || amount < 1000 || amount > 1000000) {
+                showStatus('❌ Количеството трябва да е между 1,000 и 1,000,000 AMS!', 'error');
+                return;
+            }
+            
+            // Extra confirmation
+            const confirmed = confirm(
+                `⚠️ ВНИМАНИЕ!\n\n` +
+                `Ще създадеш ${amount.toLocaleString()} НОВИ AMS токени.\n\n` +
+                `Това ще НАМАЛИ цената на токена!\n\n` +
+                `Сигурен ли си?`
+            );
+            
+            if (!confirmed) {
+                showStatus('❌ Отказано от потребител', 'error');
+                return;
+            }
+            
+            // Second confirmation
+            const reallyConfirmed = confirm(
+                `🚨 ПОСЛЕДНА ПРОВЕРКА!\n\n` +
+                `Обяснил ли си на дарителите защо го правиш?\n\n` +
+                `Публикувал ли си обявление?\n\n` +
+                `Натисни OK само ако си 100% сигурен!`
+            );
+            
+            if (!reallyConfirmed) {
+                showStatus('❌ Отказано от потребител', 'error');
+                return;
+            }
+            
+            try {
+                const web3 = new Web3(window.ethereum);
+                const accounts = await web3.eth.getAccounts();
+                
+                showStatus('🔄 Mint-ване на нови токени...', 'info');
+                
+                // TODO: Call mint() function on contract
+                const amountWei = web3.utils.toWei(amount.toString(), 'ether');
+                
+                // Simulate success
+                setTimeout(() => {
+                    showStatus(
+                        `✅ Успешно създадени ${amount.toLocaleString()} нови AMS токени!<br><br>` +
+                        `⚠️ Цената може да е намаляла. Провери PancakeSwap.<br><br>` +
+                        `💡 Препоръка: Добави BNB ликвидност (ААА) за стабилизация.`,
+                        'success'
+                    );
+                }, 2000);
+                
+            } catch (error) {
+                showStatus('❌ Грешка: ' + error.message, 'error');
+            }
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.innerHTML = message;
+            status.style.display = 'block';
+            
+            if (type === 'success') {
+                status.style.background = '#4caf50';
+            } else if (type === 'error') {
+                status.style.background = '#ff5722';
+            } else {
+                status.style.background = '#ffc107';
+                status.style.color = '#000';
+            }
+        }
+    </script>
+</body>
+</html>

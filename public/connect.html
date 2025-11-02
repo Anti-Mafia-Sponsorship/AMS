@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMS Token - Свържи Wallet</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0a0e27; color: #fff; }
+        nav { background: #1a1f3a; padding: 20px; text-align: center; }
+        nav a { color: #667eea; text-decoration: none; margin: 0 15px; font-size: 1.1em; }
+        nav a:hover { color: #fff; }
+        .container { max-width: 800px; margin: 100px auto; padding: 40px; }
+        .connect-box { background: #1a1f3a; padding: 50px; border-radius: 20px; text-align: center; }
+        .connect-box h1 { font-size: 2.5em; color: #667eea; margin-bottom: 30px; }
+        .wallet-button { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 50px; border-radius: 50px; font-size: 1.3em; font-weight: bold; text-decoration: none; margin: 15px; border: none; cursor: pointer; transition: transform 0.3s; }
+        .wallet-button:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4); }
+        .wallet-icon { font-size: 2em; margin-right: 10px; }
+        .info-box { background: #0a0e27; padding: 30px; border-radius: 15px; margin-top: 40px; text-align: left; }
+        .info-box h3 { color: #667eea; margin-bottom: 15px; }
+        .info-box p { color: #b8c5d6; line-height: 1.8; margin-bottom: 10px; }
+        .status { background: #ffc107; color: #000; padding: 20px; border-radius: 10px; margin-top: 30px; font-weight: bold; display: none; }
+        .connected { background: #4caf50; color: #fff; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Начало</a>
+        <a href="connect.html">Свържи Wallet</a>
+        <a href="rules.html">Правила</a>
+        <a href="donate.html">Дарявай</a>
+        <a href="admin.html">Owner Panel</a>
+    </nav>
+
+    <div class="container">
+        <div class="connect-box">
+            <h1>🔗 Свържи Портфейла си</h1>
+            <p style="color: #b8c5d6; margin-bottom: 40px; font-size: 1.2em;">
+                Избери wallet за свързване към AMS Token
+            </p>
+            
+            <button class="wallet-button" onclick="connectMetaMask()">
+                <span class="wallet-icon">🦊</span> MetaMask
+            </button>
+            
+            <button class="wallet-button" onclick="connectTrustWallet()">
+                <span class="wallet-icon">💼</span> Trust Wallet
+            </button>
+            
+            <button class="wallet-button" onclick="connectWalletConnect()">
+                <span class="wallet-icon">🔄</span> WalletConnect
+            </button>
+            
+            <div id="status" class="status"></div>
+        </div>
+        
+        <div class="info-box">
+            <h3>ℹ️ Защо трябва да свържа wallet?</h3>
+            <p>✅ За да изпращаш BNB дарения (Вариант Б)</p>
+            <p>✅ За да виждаш баланса си в AMS токени</p>
+            <p>✅ За да продаваш токени (когато trading е enabled)</p>
+            <p>✅ За да виждаш историята си на дарения</p>
+        </div>
+        
+        <div class="info-box">
+            <h3>⚠️ Безопасност:</h3>
+            <p>🔒 Никога не споделяй seed phrase-а си!</p>
+            <p>🔒 Проверявай винаги contract address-а преди транзакция!</p>
+            <p>🔒 Свързването на wallet НЕ дава достъп до средствата ти!</p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="donate.html" class="wallet-button" style="display: inline-block;">
+                Продължи към Дарения →
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let web3;
+        let account;
+        
+        async function connectMetaMask() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    // Request account access
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    web3 = new Web3(window.ethereum);
+                    account = accounts[0];
+                    
+                    // Check network (BNB Smart Chain Testnet = 97)
+                    const chainId = await web3.eth.getChainId();
+                    if (chainId !== 97) {
+                        alert('⚠️ Моля, превключи на BNB Smart Chain Testnet (97)');
+                        return;
+                    }
+                    
+                    showStatus(`✅ Свързан: ${account.substring(0, 6)}...${account.substring(38)}`, true);
+                    
+                    // Save to localStorage
+                    localStorage.setItem('walletConnected', 'true');
+                    localStorage.setItem('walletAddress', account);
+                    
+                } catch (error) {
+                    showStatus('❌ Грешка: ' + error.message, false);
+                }
+            } else {
+                showStatus('❌ MetaMask не е инсталиран! Инсталирай от metamask.io', false);
+            }
+        }
+        
+        async function connectTrustWallet() {
+            // Same as MetaMask (uses window.ethereum)
+            connectMetaMask();
+        }
+        
+        async function connectWalletConnect() {
+            showStatus('🔄 WalletConnect скоро...', false);
+        }
+        
+        function showStatus(message, success) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.style.display = 'block';
+            if (success) {
+                status.className = 'status connected';
+            } else {
+                status.className = 'status';
+            }
+        }
+        
+        // Check if already connected
+        window.onload = function() {
+            if (localStorage.getItem('walletConnected') === 'true') {
+                const address = localStorage.getItem('walletAddress');
+                showStatus(`✅ Вече свързан: ${address.substring(0, 6)}...${address.substring(38)}`, true);
+            }
+        }
+    </script>
+</body>
+</html>

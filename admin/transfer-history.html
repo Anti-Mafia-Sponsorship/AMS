@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - История на Transfers</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0a0e27; color: #fff; }
+        nav { background: #1a1f3a; padding: 20px; text-align: center; }
+        nav a { color: #667eea; text-decoration: none; margin: 0 15px; font-size: 1.1em; }
+        nav a:hover { color: #fff; }
+        .container { max-width: 1400px; margin: 40px auto; padding: 40px; }
+        h1 { font-size: 2.5em; color: #667eea; margin-bottom: 30px; }
+        .info-box { background: #4caf50; color: #fff; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        table { width: 100%; background: #1a1f3a; border-radius: 15px; margin: 30px 0; border-collapse: collapse; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #667eea; }
+        th { background: #667eea; color: #fff; font-weight: bold; }
+        td { color: #b8c5d6; }
+        .wallet-addr { font-family: 'Courier New', monospace; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Dashboard</a>
+        <a href="queue-management.html">Donation Queue</a>
+        <a href="transfer-history.html">Transfer History</a>
+        <a href="trading-history.html">Trading History</a>
+    </nav>
+    <div class="container">
+        <h1>📜 История на Transfer Транзакции</h1>
+        <div class="info-box">
+            <strong>ℹ️ Забележка:</strong> Показва САМО transfers от OWNER портфейла<br>
+            Последни 100 транзакции, сортирани по дата
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Баланс ПРЕДИ</th>
+                    <th>Изпратени Токени</th>
+                    <th>Баланс СЛЕД</th>
+                    <th>Към Адрес</th>
+                    <th>Име на Донор</th>
+                    <th>Email</th>
+                    <th>Телефон</th>
+                    <th>Дата/Час</th>
+                    <th>TX Hash</th>
+                </tr>
+            </thead>
+            <tbody id="historyTable">
+                <tr><td colspan="10" style="text-align: center; padding: 40px;">Зареждане...</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script>
+        // TODO: Fetch Transfer events from blockchain
+        // web3.eth.getPastLogs() + filter by owner address
+        console.log('Transfer history page loaded');
+    </script>
+</body>
+</html>

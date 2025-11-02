@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Panel - Mint и Изпрати</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0a0e27; color: #fff; }
+        nav { background: #1a1f3a; padding: 20px; text-align: center; }
+        nav a { color: #667eea; text-decoration: none; margin: 0 15px; font-size: 1.1em; }
+        nav a:hover { color: #fff; }
+        .container { max-width: 900px; margin: 60px auto; padding: 40px; }
+        h1 { font-size: 2.5em; color: #764ba2; text-align: center; margin-bottom: 20px; }
+        .subtitle { text-align: center; color: #b8c5d6; font-size: 1.2em; margin-bottom: 50px; }
+        .panel-box { background: #1a1f3a; padding: 40px; border-radius: 20px; margin: 30px 0; border: 3px solid #764ba2; }
+        .panel-box h2 { color: #667eea; font-size: 2em; margin-bottom: 20px; }
+        .panel-box p { color: #b8c5d6; line-height: 1.8; margin-bottom: 15px; }
+        .form-group { margin: 25px 0; }
+        .form-group label { display: block; color: #667eea; font-size: 1.2em; margin-bottom: 10px; font-weight: bold; }
+        .form-group input { width: 100%; padding: 15px; border-radius: 10px; border: 2px solid #667eea; background: #0a0e27; color: #fff; font-size: 1.1em; }
+        .btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 50px; border-radius: 50px; font-size: 1.3em; font-weight: bold; border: none; cursor: pointer; transition: transform 0.3s; width: 100%; margin-top: 20px; }
+        .btn:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(118, 75, 162, 0.4); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .info-box { background: #4caf50; color: #fff; padding: 30px; border-radius: 15px; margin: 30px 0; }
+        .warning-box { background: #ff5722; color: #fff; padding: 30px; border-radius: 15px; margin: 30px 0; }
+        .status { padding: 20px; border-radius: 10px; margin-top: 20px; display: none; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Начало</a>
+        <a href="aaa-add-liquidity.html">ААА: Ликвидност</a>
+        <a href="bbb-send-tokens-to-donor.html">БББ: Изпрати Токени</a>
+        <a href="ggg-mint-and-send.html">ГГГ: Mint и Изпрати</a>
+        <a href="vvv-mint-new-AMS.html">ВВВ: Mint Нови</a>
+        <a href="contact.html">Контакти</a>
+    </nav>
+
+    <div class="container">
+        <h1>✨ ГГГ: Mint и Изпрати на Дарител</h1>
+        <p class="subtitle">Създай НОВИ токени и ги изпрати директно → БЕЗ добавяне в ликвидност</p>
+        
+        <div class="info-box">
+            <h3>📋 Какво прави тази функция?</h3>
+            <p style="font-size: 1.2em; line-height: 1.8;">
+                <strong>Създава НОВИ токени и ги изпраща ДИРЕКТНО на дарител</strong><br><br>
+                
+                ✅ Mint-ва нови токени (supply расте)<br>
+                ✅ Изпраща ги директно на дарител<br>
+                ✅ БЕЗ добавяне в ликвидност<br>
+                ✅ Спазва същите timeout правила (12ч/30мин)<br><br>
+                
+                <strong>Разлика от ВВВ:</strong><br>
+                • ВВВ: Mint → Токените отиват при теб → Трябва да ги изпратиш отделно<br>
+                • ГГГ: Mint → Токените отиват ДИРЕКТНО при дарителя<br><br>
+                
+                <strong>Използвай за:</strong> Бързо награждаване на дарители когато нямаш резервни токени
+            </p>
+        </div>
+        
+        <div class="panel-box">
+            <h2>🔧 Mint и Изпрати</h2>
+            
+            <div class="form-group">
+                <label>Адрес на дарител:</label>
+                <input type="text" id="recipientAddress" placeholder="0x...">
+            </div>
+            
+            <div class="form-group">
+                <label>Колко НОВИ AMS токени? (Max 1000)</label>
+                <input type="number" id="tokenAmount" placeholder="Например: 1000" step="1" max="1000" min="1">
+            </div>
+            
+            <button class="btn" id="mintBtn" onclick="mintAndSend()">✨ Mint и Изпрати</button>
+            
+            <div id="status" class="status"></div>
+        </div>
+        
+        <div class="warning-box">
+            <h3>⚠️ ВАЖНО: Ограничения</h3>
+            <p style="font-size: 1.1em; line-height: 1.8;">
+                🔒 <strong>Максимум 1000 AMS на транзакция</strong><br>
+                🔒 <strong>Timeout: 12 часа между mint-ове</strong> (намалява до 30 мин)<br>
+                🔒 Supply РАСТЕ (създават се нови токени)<br>
+                🔒 Цената може ЛЕКО да падне<br>
+                🔒 Само Owner може да извика тази функция
+            </p>
+        </div>
+        
+        <div class="info-box" style="margin-top: 40px;">
+            <h3>🎯 Кога да използваш ГГГ?</h3>
+            <p style="font-size: 1.1em; line-height: 1.8;">
+                <strong>Препоръчително:</strong><br><br>
+                
+                ✅ Свършили са резервните токени (30M изчерпани)<br>
+                ✅ Трябва БЪРЗО да наградиш дарител<br>
+                ✅ Не искаш да чакаш 2 транзакции (mint + transfer)<br>
+                ✅ Малки количества (до 1000 AMS)<br><br>
+                
+                <strong>НЕ препоръчително:</strong><br>
+                ❌ За големи количества (използвай ВВВ + ААА)<br>
+                ❌ Ако имаш резервни токени (използвай БББ)<br>
+                ❌ Ако цената е ниска
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const CONTRACT_ADDRESS = 'YOUR_CONTRACT_ADDRESS_HERE'; // ЗАМЕНИ С РЕАЛНИЯ АДРЕС!
+        
+        const CONTRACT_ABI = [
+            {
+                "inputs": [{"internalType": "address", "name": "donor", "type": "address"}, {"internalType": "uint256", "name": "amount", "type": "uint256"}],
+                "name": "CPanelMintAndSendToDonor",
+                "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            }
+        ];
+        
+        let web3;
+        let contract;
+        let userAccount;
+        
+        async function init() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    web3 = new Web3(window.ethereum);
+                    const accounts = await web3.eth.getAccounts();
+                    userAccount = accounts[0];
+                    
+                    contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+                    
+                } catch (error) {
+                    showStatus('❌ Грешка при свързване с MetaMask: ' + error.message, 'error');
+                }
+            } else {
+                showStatus('❌ Моля, инсталирай MetaMask!', 'error');
+            }
+        }
+        
+        async function mintAndSend() {
+            const recipient = document.getElementById('recipientAddress').value.trim();
+            const amount = parseFloat(document.getElementById('tokenAmount').value);
+            
+            // Валидация
+            if (!recipient || !recipient.startsWith('0x') || recipient.length !== 42) {
+                showStatus('❌ Невалиден адрес! Трябва да започва с 0x и да е 42 символа.', 'error');
+                return;
+            }
+            
+            if (!amount || amount < 1 || amount > 1000) {
+                showStatus('❌ Количеството трябва да е между 1 и 1000 AMS!', 'error');
+                return;
+            }
+            
+            // Потвърждение
+            const confirmed = confirm(
+                `⚠️ ВНИМАНИЕ!\n\n` +
+                `Ще създадеш ${amount} НОВИ AMS токени и ще ги изпратиш на:\n${recipient}\n\n` +
+                `Supply ще НАРАСНЕ с ${amount} токена.\n\n` +
+                `Сигурен ли си?`
+            );
+            
+            if (!confirmed) {
+                showStatus('❌ Отказано от потребител', 'error');
+                return;
+            }
+            
+            try {
+                showStatus('🔄 Mint-ване и изпращане...', 'info');
+                document.getElementById('mintBtn').disabled = true;
+                
+                const amountWei = web3.utils.toWei(amount.toString(), 'ether');
+                
+                const tx = await contract.methods.CPanelMintAndSendToDonor(recipient, amountWei).send({
+                    from: userAccount,
+                    gas: 250000
+                });
+                
+                showStatus(`✅ Успешно създадени и изпратени ${amount} AMS към ${recipient.substring(0, 6)}...${recipient.substring(38)}<br>Транзакция: ${tx.transactionHash}`, 'success');
+                
+            } catch (error) {
+                showStatus('❌ Грешка: ' + error.message, 'error');
+            } finally {
+                document.getElementById('mintBtn').disabled = false;
+            }
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.innerHTML = message;
+            status.style.display = 'block';
+            
+            if (type === 'success') {
+                status.style.background = '#4caf50';
+            } else if (type === 'error') {
+                status.style.background = '#ff5722';
+            } else {
+                status.style.background = '#ffc107';
+                status.style.color = '#000';
+            }
+        }
+        
+        // Инициализирай при зареждане
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

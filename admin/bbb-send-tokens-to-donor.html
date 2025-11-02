@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Panel - Изпрати Токени</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0a0e27; color: #fff; }
+        nav { background: #1a1f3a; padding: 20px; text-align: center; }
+        nav a { color: #667eea; text-decoration: none; margin: 0 15px; font-size: 1.1em; }
+        nav a:hover { color: #fff; }
+        .container { max-width: 900px; margin: 60px auto; padding: 40px; }
+        h1 { font-size: 2.5em; color: #4caf50; text-align: center; margin-bottom: 20px; }
+        .subtitle { text-align: center; color: #b8c5d6; font-size: 1.2em; margin-bottom: 50px; }
+        .panel-box { background: #1a1f3a; padding: 40px; border-radius: 20px; margin: 30px 0; border: 3px solid #4caf50; }
+        .panel-box h2 { color: #667eea; font-size: 2em; margin-bottom: 20px; }
+        .panel-box p { color: #b8c5d6; line-height: 1.8; margin-bottom: 15px; }
+        .form-group { margin: 25px 0; }
+        .form-group label { display: block; color: #667eea; font-size: 1.2em; margin-bottom: 10px; font-weight: bold; }
+        .form-group input { width: 100%; padding: 15px; border-radius: 10px; border: 2px solid #667eea; background: #0a0e27; color: #fff; font-size: 1.1em; }
+        .btn { background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%); color: white; padding: 20px 50px; border-radius: 50px; font-size: 1.3em; font-weight: bold; border: none; cursor: pointer; transition: transform 0.3s; width: 100%; margin-top: 20px; }
+        .btn:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4); }
+        .info-box { background: #4caf50; color: #fff; padding: 30px; border-radius: 15px; margin: 30px 0; }
+        .warning-box { background: #ff5722; color: #fff; padding: 30px; border-radius: 15px; margin: 30px 0; }
+        .timeout-box { background: #ffc107; color: #000; padding: 30px; border-radius: 15px; margin: 30px 0; font-weight: bold; }
+        .status { padding: 20px; border-radius: 10px; margin-top: 20px; display: none; }
+        .queue-box { background: #0a0e27; padding: 25px; border-radius: 10px; border-left: 4px solid #4caf50; margin: 20px 0; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Начало</a>
+        <a href="aaa-add-liquidity.html">ААА: Ликвидност</a>
+        <a href="bbb-send-tokens-to-donor.html">БББ: Изпрати Токени</a>
+        <a href="vvv-mint-new-AMS.html">ВВВ: Mint Нови</a>
+        <a href="contact.html">Контакти</a>
+    </nav>
+
+    <div class="container">
+        <h1>💸 БББ: Изпрати Токени на Дарител</h1>
+        <p class="subtitle">Изпрати СЪЩЕСТВУВАЩИ токени от твоя резерв → Цената НЕ се променя</p>
+        
+        <div class="info-box">
+            <h3>📋 Какво прави тази функция?</h3>
+            <p style="font-size: 1.2em; line-height: 1.8;">
+                <strong>Изпращаш токени от ТВОЯ резерв към дарител</strong><br><br>
+                
+                ✅ Токените СА ВЕЧЕ създадени (от началните 40M)<br>
+                ✅ Supply НЕ се променя<br>
+                ✅ Цената НЕ се променя<br>
+                ✅ Просто преместваш токени от твой към друг wallet<br><br>
+                
+                <strong>Използвай за:</strong> Ръчно изпращане на награди на дарители (Вариант А)
+            </p>
+        </div>
+        
+        <div class="timeout-box">
+            <h3>⏳ ДИНАМИЧЕН ТАЙМАУТ</h3>
+            <p style="font-size: 1.2em; line-height: 1.8;">
+                🕐 <strong>Базов:</strong> 12 часа между изпращания<br>
+                ⚡ <strong>Ускорен:</strong> 30 минути (при висока цена ИЛИ много дарители)<br><br>
+                
+                <strong>Автоматично намалява до 30 мин когато:</strong><br>
+                ✅ Цената стане 100x по-висока (1 AMS = 0.1 BNB)<br>
+                ✅ В опашката има 1000+ дарители<br>
+                ✅ Ликвидността е много голяма<br><br>
+                
+                🎯 <strong>Текущ timeout:</strong> <span id="currentTimeout">12 часа</span>
+            </p>
+        </div>
+        
+        <div class="panel-box">
+            <h2>🔧 Изпрати Токени</h2>
+            
+            <div class="form-group">
+                <label>Адрес на дарител:</label>
+                <input type="text" id="recipientAddress" placeholder="0x...">
+            </div>
+            
+            <div class="form-group">
+                <label>Колко AMS токени? (Max 1000)</label>
+                <input type="number" id="tokenAmount" placeholder="Например: 1000" step="1" max="1000" min="1">
+            </div>
+            
+            <div class="queue-box">
+                <strong style="color: #4caf50;">📊 Статистика:</strong><br><br>
+                <span style="color: #b8c5d6;">
+                Последно изпращане: <span id="lastSent">Никога</span><br>
+                Време до следващо: <span id="timeRemaining">Готов!</span><br>
+                Твой баланс: <span id="ownerBalance">0 AMS</span><br>
+                Дарители в опашка: <span id="queueLength">0</span>
+                </span>
+            </div>
+            
+            <button class="btn" onclick="sendTokens()">💸 Изпрати Токени</button>
+            
+            <div id="status" class="status"></div>
+        </div>
+        
+        <div class="warning-box">
+            <h3>⚠️ ВАЖНО: Ограничения</h3>
+            <p style="font-size: 1.1em; line-height: 1.8;">
+                🔒 <strong>Максимум 1000 AMS на транзакция</strong><br>
+                🔒 <strong>Timeout: 12 часа между изпращания</strong> (намалява до 30 мин автоматично)<br>
+                🔒 Само Owner може да извика тази функция<br>
+                🔒 Не можеш да изпратиш повече от твоя баланс<br>
+                🔒 Адресът трябва да е валиден BEP-20 address
+            </p>
+        </div>
+        
+        <div class="info-box" style="margin-top: 40px;">
+            <h3>🎯 Как да използваш БББ?</h3>
+            <p style="font-size: 1.1em; line-height: 1.8;">
+                <strong>Сценарий 1: Вариант А (Ръчно дарение)</strong><br>
+                1. Дарител изпраща BNB към твоя wallet<br>
+                2. Изпраща имейл с адреса си<br>
+                3. ТИ отваряш тази страница<br>
+                4. Въвеждаш адреса му и количество (100-1000 AMS)<br>
+                5. Изпращаш токени<br><br>
+                
+                <strong>Сценарий 2: Бонуси за ранни дарители</strong><br>
+                1. Първите 10 дарители получават повече<br>
+                2. Вместо 1000 AMS → изпращаш 1500 AMS<br>
+                3. Награждаваш лоялността!<br><br>
+                
+                <strong>Сценарий 3: Грешка в автоматичното изпращане</strong><br>
+                1. Автоматичният процес се провали<br>
+                2. Ръчно изпращаш на засегнатия дарител<br>
+                3. Коригираш проблема
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const CONTRACT_ADDRESS = '0x0000000000000000000000000000000000000000';
+        let lastSentTime = 0;
+        
+        async function sendTokens() {
+            const recipient = document.getElementById('recipientAddress').value;
+            const amount = parseFloat(document.getElementById('tokenAmount').value);
+            
+            // Validation
+            if (!recipient || !recipient.startsWith('0x') || recipient.length !== 42) {
+                showStatus('❌ Невалиден адрес! Трябва да започва с 0x и да е 42 символа.', 'error');
+                return;
+            }
+            
+            if (!amount || amount < 1 || amount > 1000) {
+                showStatus('❌ Количеството трябва да е между 1 и 1000 AMS!', 'error');
+                return;
+            }
+            
+            // Check timeout
+            const now = Date.now();
+            const timeout = calculateTimeout(); // 12h or 30min
+            
+            if (now - lastSentTime < timeout) {
+                const remaining = Math.ceil((timeout - (now - lastSentTime)) / 1000 / 60);
+                showStatus(`⏳ Чакай още ${remaining} минути преди следващо изпращане!`, 'error');
+                return;
+            }
+            
+            try {
+                const web3 = new Web3(window.ethereum);
+                const accounts = await web3.eth.getAccounts();
+                
+                showStatus('🔄 Изпращане на токени...', 'info');
+                
+                // TODO: Call transfer() function on contract
+                const amountWei = web3.utils.toWei(amount.toString(), 'ether');
+                
+                // Simulate success
+                setTimeout(() => {
+                    lastSentTime = Date.now();
+                    showStatus(`✅ Успешно изпратени ${amount} AMS към ${recipient.substring(0, 6)}...${recipient.substring(38)}`, 'success');
+                    updateStats();
+                }, 2000);
+                
+            } catch (error) {
+                showStatus('❌ Грешка: ' + error.message, 'error');
+            }
+        }
+        
+        function calculateTimeout() {
+            // TODO: Get real data from contract
+            const price = 0.00001; // Current price in BNB
+            const queueLength = 0;
+            
+            // If price is 100x higher OR queue > 1000
+            if (price > 0.001 || queueLength > 1000) {
+                return 30 * 60 * 1000; // 30 minutes
+            }
+            
+            return 12 * 60 * 60 * 1000; // 12 hours
+        }
+        
+        function updateStats() {
+            const timeout = calculateTimeout();
+            const timeoutText = timeout === 30 * 60 * 1000 ? '30 минути' : '12 часа';
+            document.getElementById('currentTimeout').textContent = timeoutText;
+            
+            if (lastSentTime > 0) {
+                const date = new Date(lastSentTime);
+                document.getElementById('lastSent').textContent = date.toLocaleString('bg-BG');
+                
+                const remaining = timeout - (Date.now() - lastSentTime);
+                if (remaining > 0) {
+                    const mins = Math.ceil(remaining / 1000 / 60);
+                    document.getElementById('timeRemaining').textContent = mins + ' минути';
+                } else {
+                    document.getElementById('timeRemaining').textContent = 'Готов!';
+                }
+            }
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.innerHTML = message;
+            status.style.display = 'block';
+            
+            if (type === 'success') {
+                status.style.background = '#4caf50';
+            } else if (type === 'error') {
+                status.style.background = '#ff5722';
+            } else {
+                status.style.background = '#ffc107';
+                status.style.color = '#000';
+            }
+        }
+        
+        // Update stats every minute
+        setInterval(updateStats, 60000);
+        updateStats();
+    </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "ams-backend",
+  "version": "1.0.0",
+  "description": "Backend functions for AMS Token",
+  "dependencies": {
+    "@sendgrid/mail": "^7.7.0"
+  }
+}
