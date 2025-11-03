@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaMask Test</title>
+    <style>
+        body { 
+            font-family: Arial; 
+            max-width: 800px; 
+            margin: 50px auto; 
+            padding: 20px;
+            background: #0a0e27;
+            color: white;
+        }
+        .box { 
+            background: #1a1f3a; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 20px 0; 
+        }
+        button {
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover { background: #5568d3; }
+        .log { 
+            background: #000; 
+            padding: 15px; 
+            border-radius: 5px; 
+            font-family: monospace; 
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success { color: #4caf50; }
+        .error { color: #ff5722; }
+        .warning { color: #ffc107; }
+    </style>
+</head>
+<body>
+    <h1>🦊 MetaMask Connection Test</h1>
+    
+    <div class="box">
+        <h2>Бутони за тест:</h2>
+        <button onclick="checkMetaMask()">1. Check MetaMask</button>
+        <button onclick="testConnect()">2. Test Connect</button>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+    
+    <div class="box">
+        <h2>Debug Log:</h2>
+        <div class="log" id="log"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script>
+        function log(msg, type = 'normal') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'success' ? 'success' : type === 'error' ? 'error' : type === 'warning' ? 'warning' : '';
+            logDiv.innerHTML += `<span class="${className}">[${timestamp}] ${msg}</span>\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(msg);
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+        
+        function checkMetaMask() {
+            log('=== Checking MetaMask ===');
+            
+            log('typeof window: ' + typeof window);
+            log('typeof window.ethereum: ' + typeof window.ethereum);
+            
+            if (typeof window.ethereum !== 'undefined') {
+                log('✅ window.ethereum EXISTS', 'success');
+                
+                log('window.ethereum.isMetaMask: ' + window.ethereum.isMetaMask);
+                log('window.ethereum.isTrust: ' + window.ethereum.isTrust);
+                log('window.ethereum.isCoinbaseWallet: ' + window.ethereum.isCoinbaseWallet);
+                
+                if (window.ethereum.isMetaMask) {
+                    log('✅ MetaMask DETECTED!', 'success');
+                } else {
+                    log('⚠️ Ethereum provider exists but not MetaMask', 'warning');
+                }
+                
+                log('Providers available:');
+                if (window.ethereum.providers) {
+                    window.ethereum.providers.forEach((p, i) => {
+                        log(`  Provider ${i}: isMetaMask=${p.isMetaMask}, isTrust=${p.isTrust}`);
+                    });
+                } else {
+                    log('  Single provider (no providers array)');
+                }
+                
+            } else {
+                log('❌ window.ethereum NOT FOUND', 'error');
+                log('MetaMask is NOT installed or NOT enabled', 'error');
+            }
+            
+            log('typeof window.web3: ' + typeof window.web3);
+            log('typeof Web3: ' + typeof Web3);
+            
+            log('=== Check Complete ===\n');
+        }
+        
+        async function testConnect() {
+            log('=== Testing Connection ===');
+            
+            if (typeof window.ethereum === 'undefined') {
+                log('❌ FAIL: window.ethereum not found', 'error');
+                log('Please install MetaMask extension', 'error');
+                alert('❌ MetaMask не е инсталиран!\n\nМоля инсталирай MetaMask extension.');
+                return;
+            }
+            
+            try {
+                log('📡 Requesting accounts...');
+                
+                const accounts = await window.ethereum.request({ 
+                    method: 'eth_requestAccounts' 
+                });
+                
+                log('✅ Accounts received: ' + accounts.length, 'success');
+                
+                if (accounts.length > 0) {
+                    log('✅ Connected: ' + accounts[0], 'success');
+                    
+                    const web3 = new Web3(window.ethereum);
+                    const chainId = await web3.eth.getChainId();
+                    log('Chain ID: ' + chainId);
+                    
+                    const balance = await web3.eth.getBalance(accounts[0]);
+                    log('Balance: ' + web3.utils.fromWei(balance, 'ether') + ' ETH/BNB');
+                    
+                    log('✅ CONNECTION SUCCESSFUL!', 'success');
+                    alert('✅ Success!\n\nConnected: ' + accounts[0].substring(0, 10) + '...');
+                    
+                } else {
+                    log('❌ No accounts returned', 'error');
+                }
+                
+            } catch (error) {
+                log('❌ ERROR: ' + error.message, 'error');
+                log('Error code: ' + error.code, 'error');
+                
+                if (error.code === 4001) {
+                    log('User rejected the request', 'warning');
+                } else if (error.code === -32002) {
+                    log('Request already pending', 'warning');
+                }
+                
+                alert('❌ Error: ' + error.message);
+            }
+            
+            log('=== Test Complete ===\n');
+        }
+        
+        // Auto-check on load
+        window.addEventListener('load', function() {
+            log('🚀 Page loaded');
+            setTimeout(checkMetaMask, 1000);
+        });
+    </script>
+</body>
+</html>
