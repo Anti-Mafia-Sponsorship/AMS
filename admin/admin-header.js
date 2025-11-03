@@ -103,6 +103,7 @@ function injectNavigationMenu() {
         { href: 'burn-tokens.html', text: '🔥 Burn', page: 'burn-tokens.html' },
         { href: 'transfer-history.html', text: '📜 Transfers', page: 'transfer-history.html' },
         { href: 'trading-history.html', text: '📈 Trading', page: 'trading-history.html' },
+        { href: '../public/contact.html', text: '📞 Contact', page: 'contact' },
         { href: '../public/index.html', text: '🏠 Public Site', page: 'public' }
     ];
     
