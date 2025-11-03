@@ -170,6 +170,8 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="wallet-helper.js"></script>
     <script>
         const CONTRACT_ADDRESS = 'YOUR_CONTRACT_ADDRESS_HERE';
         const CONTRACT_ABI = [
@@ -185,12 +187,13 @@
         let userAccount;
 
         async function init() {
-            if (typeof window.ethereum !== 'undefined') {
+            // Use wallet helper for better detection
+            const connected = await window.walletHelper.init();
+            
+            if (connected) {
                 try {
-                    await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    web3 = new Web3(window.ethereum);
-                    const accounts = await web3.eth.getAccounts();
-                    userAccount = accounts[0];
+                    web3 = window.walletHelper.getWeb3();
+                    userAccount = window.walletHelper.getAccount();
                     
                     contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
                     
@@ -201,9 +204,8 @@
                     
                 } catch (error) {
                     console.error('Error:', error);
+                    alert('⚠️ Грешка при инициализация: ' + error.message);
                 }
-            } else {
-                alert('⚠️ Моля, инсталирай MetaMask!');
             }
         }
 
