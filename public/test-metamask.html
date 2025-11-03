@@ -60,7 +60,16 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="ip-check.js"></script>
     <script>
+        // Block page for non-admins
+        window.addEventListener('load', async function() {
+            await window.accessControl.blockTestPage();
+            // Continue with normal page logic only if admin
+            log('🚀 Page loaded');
+            setTimeout(checkMetaMask, 1000);
+        });
+        
         function log(msg, type = 'normal') {
             const logDiv = document.getElementById('log');
             const timestamp = new Date().toLocaleTimeString();
@@ -164,12 +173,6 @@
             
             log('=== Test Complete ===\n');
         }
-        
-        // Auto-check on load
-        window.addEventListener('load', function() {
-            log('🚀 Page loaded');
-            setTimeout(checkMetaMask, 1000);
-        });
     </script>
 </body>
 </html>

@@ -65,6 +65,7 @@
         .debug-info { background: #1a1f3a; padding: 20px; border-radius: 10px; margin-top: 20px; font-family: monospace; font-size: 0.85em; display: none; max-height: 300px; overflow-y: auto; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="ip-check.js"></script>
 </head>
 <body>
     <nav>
@@ -111,7 +112,7 @@
             
             <div id="status" class="status"></div>
             
-            <button onclick="toggleDebug()" style="margin-top: 20px; padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 10px; cursor: pointer;">
+            <button onclick="toggleDebug()" id="debugToggleBtn" style="margin-top: 20px; padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 10px; cursor: pointer;">
                 Toggle Debug Info
             </button>
             <div id="debugInfo" class="debug-info"></div>
@@ -170,7 +171,7 @@
         }
         
         // Check wallets on page load
-        window.addEventListener('load', function() {
+        window.addEventListener('load', async function() {
             updateDebug('🔍 Checking for wallet providers...');
             
             const hasEthereum = typeof window.ethereum !== 'undefined';
@@ -215,6 +216,9 @@
                     showStatus(`✅ Вече свързан с ${walletType}:\n${address.substring(0, 6)}...${address.substring(38)}`, 'connected');
                 }
             }
+            
+            // Init access control (hide debug features for non-admins)
+            await window.accessControl.initAccessControl();
         });
         
         // ========================================
