@@ -1,0 +1,18 @@
+{
+  "name": "ams-token-tests",
+  "version": "1.0.0",
+  "description": "Comprehensive test suite for AMS Token project",
+  "main": "run-all-tests.js",
+  "scripts": {
+    "test": "node run-all-tests.js",
+    "test:contract": "node smart-contract/test-all-contract.js",
+    "test:tables": "node admin-tables/test-all-tables.js",
+    "test:forms": "node forms/test-all-forms.js"
+  },
+  "keywords": ["testing", "blockchain", "smart-contract"],
+  "author": "AMS Token Team",
+  "license": "MIT",
+  "dependencies": {
+    "web3": "^4.3.0"
+  }
+}
