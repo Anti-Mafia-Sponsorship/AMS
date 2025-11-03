@@ -38,6 +38,8 @@ async function runSmartContractTests() {
         './smart-contract/test-queue.js'
     ];
     
+    console.log(`Found ${testFiles.length} smart contract test files\n`);
+    
     for (const testFile of testFiles) {
         try {
             const test = require(testFile);
@@ -69,6 +71,8 @@ async function runAdminTableTests() {
         './admin-tables/test-transactions-table.js'
     ];
     
+    console.log(`Found ${testFiles.length} admin table test files\n`);
+    
     for (const testFile of testFiles) {
         try {
             const test = require(testFile);
@@ -99,6 +103,8 @@ async function runFormTests() {
         './forms/test-transfer-form.js',
         './forms/test-mint-form.js'
     ];
+    
+    console.log(`Found ${testFiles.length} form test files\n`);
     
     for (const testFile of testFiles) {
         try {
