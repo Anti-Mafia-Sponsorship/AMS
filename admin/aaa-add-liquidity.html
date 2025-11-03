@@ -29,13 +29,21 @@
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 </head>
 <body>
-    <nav>
-        <a href="index.html">Начало</a>
-        <a href="aaa-add-liquidity.html">ААА: Ликвидност</a>
-        <a href="bbb-send-tokens-to-donor.html">БББ: Изпрати Токени</a>
-        <a href="vvv-mint-new-AMS.html">ВВВ: Mint Нови</a>
-        <a href="contact.html">Контакти</a>
-    </nav>
+<nav style="background: #1a1f3a; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.3);">
+    <a href="index.html" style="color: #667eea; text-decoration: none; margin: 0 10px; font-size: 1em;">📊 Dashboard</a>
+    <a href="queue-management.html" style="color: #667eea; text-decoration: none; margin: 0 10px; font-size: 1em;">📋 Queue</a>
+    <a href="bbb-send-tokens-to-donor.html" style="color: #667eea; text-decoration: none; margin: 0 10px; font-size: 1em;">💸 Изпрати</a>
+    <a href="ggg-mint-and-send.html" style="color: #667eea; text-decoration: none; margin: 0 10px; font-size: 1em;">✨ Mint&Send</a>
+    <a href="vvv-mint-new-AMS.html" style="color: #667eea; text-decoration: none; margin: 0 10px; font-size: 1em;">🔥 Mint</a>
+    <a href="aaa-add-liquidity.html" style="color: #667eea; text-decoration: none; margin: 0 10px; font-size: 1em;">💰 Ликвидност</a>
+    <a href="burn-tokens.html" style="color: #667eea; text-decoration: none; margin: 0 10px; font-size: 1em;">🔥 Burn</a>
+    <a href="transfer-history.html" style="color: #667eea; text-decoration: none; margin: 0 10px; font-size: 1em;">📜 Transfers</a>
+    <a href="trading-history.html" style="color: #667eea; text-decoration: none; margin: 0 10px; font-size: 1em;">📊 Trading</a>
+    <a href="../public/contact.html" style="color: #667eea; text-decoration: none; margin: 0 10px; font-size: 1em;">📞 Контакти</a>
+</nav>
+<script>
+(function(){const c=window.location.pathname.split("/").pop();document.querySelectorAll("nav a").forEach(l=>{if(l.getAttribute("href")===c){l.style.color="#ffc107";l.style.fontWeight="bold";}l.addEventListener("mouseenter",function(){if(this.style.color!=="rgb(255, 193, 7)")this.style.color="#fff";});l.addEventListener("mouseleave",function(){if(this.getAttribute("href")!==c)this.style.color="#667eea";});});})();
+</script>
 
     <div class="container">
         <h1>💰 ААА: Добавяне на Ликвидност</h1>

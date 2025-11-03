@@ -13,16 +13,45 @@
         .container { max-width: 800px; margin: 100px auto; padding: 40px; }
         .connect-box { background: #1a1f3a; padding: 50px; border-radius: 20px; text-align: center; }
         .connect-box h1 { font-size: 2.5em; color: #667eea; margin-bottom: 30px; }
-        .wallet-button { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 50px; border-radius: 50px; font-size: 1.3em; font-weight: bold; text-decoration: none; margin: 15px; border: none; cursor: pointer; transition: transform 0.3s; }
-        .wallet-button:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4); }
-        .wallet-icon { font-size: 2em; margin-right: 10px; }
+        .wallet-button { 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; 
+            padding: 30px 20px; 
+            border-radius: 20px; 
+            font-size: 1.1em; 
+            font-weight: bold; 
+            text-decoration: none; 
+            border: none; 
+            cursor: pointer; 
+            transition: transform 0.3s, box-shadow 0.3s;
+            min-height: 140px;
+        }
+        .wallet-button:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4); 
+        }
+        .wallet-button:disabled { 
+            opacity: 0.5; 
+            cursor: not-allowed; 
+            transform: none;
+        }
+        .wallet-icon { 
+            font-size: 3em; 
+            margin-bottom: 10px;
+            display: block;
+        }
         .info-box { background: #0a0e27; padding: 30px; border-radius: 15px; margin-top: 40px; text-align: left; }
         .info-box h3 { color: #667eea; margin-bottom: 15px; }
         .info-box p { color: #b8c5d6; line-height: 1.8; margin-bottom: 10px; }
         .status { background: #ffc107; color: #000; padding: 20px; border-radius: 10px; margin-top: 30px; font-weight: bold; display: none; }
         .connected { background: #4caf50; color: #fff; }
+        .error { background: #ff5722; color: #fff; }
+        .debug-info { background: #1a1f3a; padding: 20px; border-radius: 10px; margin-top: 20px; font-family: monospace; font-size: 0.9em; display: none; }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 </head>
 <body>
     <nav>
@@ -30,7 +59,7 @@
         <a href="connect.html">Свържи Wallet</a>
         <a href="rules.html">Правила</a>
         <a href="donate.html">Дарявай</a>
-        <a href="admin.html">Owner Panel</a>
+        <a href="contact.html">Контакти</a>
     </nav>
 
     <div class="container">
@@ -40,34 +69,52 @@
                 Избери wallet за свързване към AMS Token
             </p>
             
-            <button class="wallet-button" onclick="connectMetaMask()">
-                <span class="wallet-icon">🦊</span> MetaMask
-            </button>
-            
-            <button class="wallet-button" onclick="connectTrustWallet()">
-                <span class="wallet-icon">💼</span> Trust Wallet
-            </button>
-            
-            <button class="wallet-button" onclick="connectWalletConnect()">
-                <span class="wallet-icon">🔄</span> WalletConnect
-            </button>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <button class="wallet-button" onclick="connectMetaMask()" id="metamaskBtn">
+                    <span class="wallet-icon">🦊</span><br>
+                    <span style="font-size: 0.9em;">MetaMask</span>
+                </button>
+                
+                <button class="wallet-button" onclick="connectTrustWallet()" id="trustBtn">
+                    <span class="wallet-icon">🛡️</span><br>
+                    <span style="font-size: 0.9em;">Trust Wallet</span>
+                </button>
+                
+                <button class="wallet-button" onclick="connectBinanceWallet()" id="binanceBtn">
+                    <span class="wallet-icon">🔶</span><br>
+                    <span style="font-size: 0.9em;">Binance Wallet</span>
+                </button>
+                
+                <button class="wallet-button" onclick="connectCoinbaseWallet()" id="coinbaseBtn">
+                    <span class="wallet-icon">🔵</span><br>
+                    <span style="font-size: 0.9em;">Coinbase Wallet</span>
+                </button>
+                
+                <button class="wallet-button" onclick="connectWalletConnect()" id="walletconnectBtn">
+                    <span class="wallet-icon">🔗</span><br>
+                    <span style="font-size: 0.9em;">WalletConnect</span>
+                </button>
+            </div>
             
             <div id="status" class="status"></div>
+            
+            <div id="debugInfo" class="debug-info"></div>
         </div>
         
         <div class="info-box">
-            <h3>ℹ️ Защо трябва да свържа wallet?</h3>
-            <p>✅ За да изпращаш BNB дарения (Вариант Б)</p>
-            <p>✅ За да виждаш баланса си в AMS токени</p>
-            <p>✅ За да продаваш токени (когато trading е enabled)</p>
-            <p>✅ За да виждаш историята си на дарения</p>
-        </div>
-        
-        <div class="info-box">
-            <h3>⚠️ Безопасност:</h3>
-            <p>🔒 Никога не споделяй seed phrase-а си!</p>
-            <p>🔒 Проверявай винаги contract address-а преди транзакция!</p>
+            <h3>ℹ️ Как работи свързването?</h3>
+            <p>📱 Wallet-ът ти се свързва с AMS Token платформата</p>
+            <p>🔐 Можеш да дариш BNB и да получаваш AMS токени</p>
+            <p>💰 След получаване на токени, можеш да ги sell-ваш обратно за BNB (при unlock период)</p>
             <p>🔒 Свързването на wallet НЕ дава достъп до средствата ти!</p>
+            
+            <div style="margin-top: 30px; padding: 20px; background: #667eea; border-radius: 10px;">
+                <h3 style="color: #fff; margin-bottom: 10px;">📥 Нямаш MetaMask?</h3>
+                <p style="color: #fff;">Инсталирай го безплатно:</p>
+                <a href="https://metamask.io/download/" target="_blank" style="display: inline-block; margin-top: 10px; background: #fff; color: #667eea; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-weight: bold;">
+                    Свали MetaMask
+                </a>
+            </div>
         </div>
         
         <div style="text-align: center; margin-top: 40px;">
@@ -77,65 +124,252 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script>
         let web3;
         let account;
         
-        async function connectMetaMask() {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    // Request account access
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    web3 = new Web3(window.ethereum);
-                    account = accounts[0];
-                    
-                    // Check network (BNB Smart Chain Testnet = 97)
-                    const chainId = await web3.eth.getChainId();
-                    if (chainId !== 97) {
-                        alert('⚠️ Моля, превключи на BNB Smart Chain Testnet (97)');
-                        return;
-                    }
-                    
-                    showStatus(`✅ Свързан: ${account.substring(0, 6)}...${account.substring(38)}`, true);
-                    
-                    // Save to localStorage
-                    localStorage.setItem('walletConnected', 'true');
-                    localStorage.setItem('walletAddress', account);
-                    
-                } catch (error) {
-                    showStatus('❌ Грешка: ' + error.message, false);
+        const BSC_MAINNET = 56;
+        const BSC_TESTNET = 97;
+        
+        // Debug info
+        function updateDebug(msg) {
+            const debugDiv = document.getElementById('debugInfo');
+            debugDiv.innerHTML += msg + '<br>';
+            debugDiv.style.display = 'block';
+            console.log(msg);
+        }
+        
+        // Check MetaMask on page load
+        window.addEventListener('load', function() {
+            updateDebug('🔍 Checking for wallet providers...');
+            
+            // Check multiple ways
+            const hasEthereum = typeof window.ethereum !== 'undefined';
+            const hasWeb3 = typeof window.web3 !== 'undefined';
+            const hasMetaMask = window.ethereum && window.ethereum.isMetaMask;
+            const hasTrust = window.ethereum && window.ethereum.isTrust;
+            const hasBinance = window.BinanceChain;
+            const hasCoinbase = window.ethereum && window.ethereum.isCoinbaseWallet;
+            
+            updateDebug('window.ethereum: ' + hasEthereum);
+            updateDebug('MetaMask: ' + hasMetaMask);
+            updateDebug('Trust Wallet: ' + hasTrust);
+            updateDebug('Binance Wallet: ' + hasBinance);
+            updateDebug('Coinbase Wallet: ' + hasCoinbase);
+            
+            // Highlight available wallets
+            if (hasMetaMask) {
+                updateDebug('✅ MetaMask detected!');
+                document.getElementById('metamaskBtn').style.borderColor = '#4caf50';
+                document.getElementById('metamaskBtn').style.border = '3px solid #4caf50';
+            }
+            if (hasTrust) {
+                updateDebug('✅ Trust Wallet detected!');
+                document.getElementById('trustBtn').style.borderColor = '#4caf50';
+                document.getElementById('trustBtn').style.border = '3px solid #4caf50';
+            }
+            if (hasBinance) {
+                updateDebug('✅ Binance Wallet detected!');
+                document.getElementById('binanceBtn').style.borderColor = '#4caf50';
+                document.getElementById('binanceBtn').style.border = '3px solid #4caf50';
+            }
+            if (hasCoinbase) {
+                updateDebug('✅ Coinbase Wallet detected!');
+                document.getElementById('coinbaseBtn').style.borderColor = '#4caf50';
+                document.getElementById('coinbaseBtn').style.border = '3px solid #4caf50';
+            }
+            
+            if (!hasEthereum && !hasBinance) {
+                updateDebug('❌ No wallet provider found');
+                showStatus('❌ Няма открит wallet! Моля инсталирай MetaMask, Trust Wallet или друг.', 'error');
+            }
+            
+            // Check if already connected
+            if (localStorage.getItem('walletConnected') === 'true') {
+                const address = localStorage.getItem('walletAddress');
+                const walletType = localStorage.getItem('walletType') || 'Unknown';
+                if (address) {
+                    showStatus(`✅ Вече свързан с ${walletType}: ${address.substring(0, 6)}...${address.substring(38)}`, 'connected');
                 }
-            } else {
-                showStatus('❌ MetaMask не е инсталиран! Инсталирай от metamask.io', false);
+            }
+        });
+        
+        async function connectMetaMask() {
+            updateDebug('🔄 Attempting to connect...');
+            
+            // Check #1: window.ethereum exists
+            if (typeof window.ethereum === 'undefined') {
+                updateDebug('❌ window.ethereum is undefined');
+                showStatus('❌ MetaMask не е инсталиран!', 'error');
+                
+                // Offer to open MetaMask download page
+                if (confirm('MetaMask не е открит.\n\nИскаш ли да го свалиш сега?')) {
+                    window.open('https://metamask.io/download/', '_blank');
+                }
+                return;
+            }
+            
+            updateDebug('✅ window.ethereum exists');
+            
+            // Check #2: isMetaMask flag
+            if (!window.ethereum.isMetaMask) {
+                updateDebug('⚠️ Not MetaMask, but has ethereum provider');
+                // Continue anyway - might be another wallet
+            }
+            
+            try {
+                updateDebug('📡 Requesting accounts...');
+                
+                // Request account access
+                const accounts = await window.ethereum.request({ 
+                    method: 'eth_requestAccounts' 
+                });
+                
+                updateDebug('✅ Accounts received: ' + accounts.length);
+                
+                if (!accounts || accounts.length === 0) {
+                    throw new Error('No accounts returned');
+                }
+                
+                web3 = new Web3(window.ethereum);
+                account = accounts[0];
+                
+                updateDebug('✅ Connected to: ' + account);
+                
+                // Check network
+                const chainId = await web3.eth.getChainId();
+                updateDebug('Current Chain ID: ' + chainId);
+                
+                if (chainId !== BSC_MAINNET && chainId !== BSC_TESTNET) {
+                    const switchToTestnet = confirm(
+                        '⚠️ Не си на BNB Smart Chain!\n\n' +
+                        'Текуща мрежа: Chain ID ' + chainId + '\n\n' +
+                        'Натисни OK за BSC Testnet\n' +
+                        'Натисни Cancel за BSC Mainnet'
+                    );
+                    
+                    try {
+                        const targetChainId = switchToTestnet ? '0x61' : '0x38';
+                        updateDebug('🔄 Switching to chain: ' + targetChainId);
+                        
+                        await window.ethereum.request({
+                            method: 'wallet_switchEthereumChain',
+                            params: [{ chainId: targetChainId }],
+                        });
+                        
+                        updateDebug('✅ Network switched!');
+                        
+                    } catch (switchError) {
+                        updateDebug('❌ Switch error: ' + switchError.message);
+                        
+                        // Network not added, try to add it
+                        if (switchError.code === 4902) {
+                            try {
+                                updateDebug('➕ Adding network...');
+                                
+                                const networkParams = switchToTestnet ? {
+                                    chainId: '0x61',
+                                    chainName: 'BSC Testnet',
+                                    nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+                                    rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+                                    blockExplorerUrls: ['https://testnet.bscscan.com']
+                                } : {
+                                    chainId: '0x38',
+                                    chainName: 'BSC Mainnet',
+                                    nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+                                    rpcUrls: ['https://bsc-dataseed.binance.org/'],
+                                    blockExplorerUrls: ['https://bscscan.com']
+                                };
+                                
+                                await window.ethereum.request({
+                                    method: 'wallet_addEthereumChain',
+                                    params: [networkParams]
+                                });
+                                
+                                updateDebug('✅ Network added!');
+                                
+                            } catch (addError) {
+                                updateDebug('❌ Add network error: ' + addError.message);
+                                showStatus('❌ Грешка при добавяне на мрежа: ' + addError.message, 'error');
+                                return;
+                            }
+                        } else {
+                            showStatus('❌ Грешка при смяна на мрежа: ' + switchError.message, 'error');
+                            return;
+                        }
+                    }
+                }
+                
+                // Get final chain after possible switch
+                const finalChainId = await web3.eth.getChainId();
+                const networkName = finalChainId === BSC_MAINNET ? 'BSC Mainnet' : 'BSC Testnet';
+                
+                updateDebug('✅ Final network: ' + networkName);
+                
+                // Save to localStorage
+                localStorage.setItem('walletConnected', 'true');
+                localStorage.setItem('walletAddress', account);
+                
+                // Show success
+                showStatus(
+                    `✅ Свързан успешно на ${networkName}!\n\n` +
+                    `Адрес: ${account.substring(0, 10)}...${account.substring(32)}`,
+                    'connected'
+                );
+                
+                // Update button
+                document.getElementById('connectBtn').disabled = true;
+                document.getElementById('btnText').textContent = '✅ Свързан';
+                
+            } catch (error) {
+                updateDebug('❌ Error: ' + error.message);
+                updateDebug('Error code: ' + error.code);
+                
+                let errorMsg = 'Грешка при свързване';
+                
+                if (error.code === 4001) {
+                    errorMsg = 'Отказа свързването';
+                } else if (error.code === -32002) {
+                    errorMsg = 'Вече има pending request в MetaMask. Провери MetaMask прозореца!';
+                } else {
+                    errorMsg = error.message;
+                }
+                
+                showStatus('❌ ' + errorMsg, 'error');
             }
         }
         
-        async function connectTrustWallet() {
-            // Same as MetaMask (uses window.ethereum)
-            connectMetaMask();
-        }
-        
-        async function connectWalletConnect() {
-            showStatus('🔄 WalletConnect скоро...', false);
-        }
-        
-        function showStatus(message, success) {
+        function showStatus(message, type) {
             const status = document.getElementById('status');
             status.textContent = message;
             status.style.display = 'block';
-            if (success) {
-                status.className = 'status connected';
-            } else {
-                status.className = 'status';
+            
+            status.classList.remove('connected', 'error');
+            if (type === 'connected') {
+                status.classList.add('connected');
+            } else if (type === 'error') {
+                status.classList.add('error');
             }
         }
         
-        // Check if already connected
-        window.onload = function() {
-            if (localStorage.getItem('walletConnected') === 'true') {
-                const address = localStorage.getItem('walletAddress');
-                showStatus(`✅ Вече свързан: ${address.substring(0, 6)}...${address.substring(38)}`, true);
-            }
+        // Listen for account changes
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', function (accounts) {
+                if (accounts.length > 0) {
+                    account = accounts[0];
+                    showStatus(`✅ Сменен account: ${account.substring(0, 10)}...${account.substring(32)}`, 'connected');
+                    localStorage.setItem('walletAddress', account);
+                } else {
+                    localStorage.removeItem('walletConnected');
+                    localStorage.removeItem('walletAddress');
+                    showStatus('⚠️ Wallet е disconnected', 'error');
+                }
+            });
+            
+            window.ethereum.on('chainChanged', function () {
+                window.location.reload();
+            });
         }
     </script>
 </body>
