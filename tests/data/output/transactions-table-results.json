@@ -1,0 +1,790 @@
+[
+  {
+    "testName": "Render All Transactions",
+    "passed": true,
+    "output": {
+      "rowCount": 10,
+      "data": [
+        {
+          "id": 1,
+          "tx_hash": "0xabc123def456789012345678901234567890123456789012345678901234567890",
+          "from_address": "0x1111111111111111111111111111111111111111",
+          "to_address": "0x2222222222222222222222222222222222222222",
+          "amount": "100.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345678,
+          "gas_used": 21000,
+          "created_at": "2025-01-15T10:00:00Z"
+        },
+        {
+          "id": 2,
+          "tx_hash": "0xdef456789012345678901234567890123456789012345678901234567890abcdef",
+          "from_address": "0xOwner123",
+          "to_address": "0x3333333333333333333333333333333333333333",
+          "amount": "1000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345679,
+          "gas_used": 45000,
+          "created_at": "2025-01-15T10:05:00Z"
+        },
+        {
+          "id": 3,
+          "tx_hash": "0x1111111111111111111111111111111111111111111111111111111111111111",
+          "from_address": "0x4444444444444444444444444444444444444444",
+          "to_address": "0x0000000000000000000000000000000000000000",
+          "amount": "50.0",
+          "tx_type": "burn",
+          "status": "confirmed",
+          "block_number": 12345680,
+          "gas_used": 30000,
+          "created_at": "2025-01-15T10:10:00Z"
+        },
+        {
+          "id": 4,
+          "tx_hash": "0x2222222222222222222222222222222222222222222222222222222222222222",
+          "from_address": "0x5555555555555555555555555555555555555555",
+          "to_address": "0x6666666666666666666666666666666666666666",
+          "amount": "250.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345681,
+          "gas_used": 21000,
+          "created_at": "2025-01-15T10:15:00Z"
+        },
+        {
+          "id": 5,
+          "tx_hash": "0x3333333333333333333333333333333333333333333333333333333333333333",
+          "from_address": "0x7777777777777777777777777777777777777777",
+          "to_address": "0x8888888888888888888888888888888888888888",
+          "amount": "500.0",
+          "tx_type": "transfer",
+          "status": "pending",
+          "block_number": null,
+          "gas_used": null,
+          "created_at": "2025-01-15T10:20:00Z"
+        },
+        {
+          "id": 6,
+          "tx_hash": "0x4444444444444444444444444444444444444444444444444444444444444444",
+          "from_address": "0xOwner123",
+          "to_address": "0x9999999999999999999999999999999999999999",
+          "amount": "2000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345682,
+          "gas_used": 45000,
+          "created_at": "2025-01-14T15:00:00Z"
+        },
+        {
+          "id": 7,
+          "tx_hash": "0x5555555555555555555555555555555555555555555555555555555555555555",
+          "from_address": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "to_address": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "amount": "750.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345683,
+          "gas_used": 21000,
+          "created_at": "2025-01-14T14:00:00Z"
+        },
+        {
+          "id": 8,
+          "tx_hash": "0x6666666666666666666666666666666666666666666666666666666666666666",
+          "from_address": "0xcccccccccccccccccccccccccccccccccccccccc",
+          "to_address": "0x0000000000000000000000000000000000000000",
+          "amount": "100.0",
+          "tx_type": "burn",
+          "status": "confirmed",
+          "block_number": 12345684,
+          "gas_used": 30000,
+          "created_at": "2025-01-14T13:00:00Z"
+        },
+        {
+          "id": 9,
+          "tx_hash": "0x7777777777777777777777777777777777777777777777777777777777777777",
+          "from_address": "0xdddddddddddddddddddddddddddddddddddddddd",
+          "to_address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "amount": "1500.0",
+          "tx_type": "transfer",
+          "status": "failed",
+          "block_number": 12345685,
+          "gas_used": 21000,
+          "created_at": "2025-01-13T12:00:00Z"
+        },
+        {
+          "id": 10,
+          "tx_hash": "0x8888888888888888888888888888888888888888888888888888888888888888",
+          "from_address": "0xOwner123",
+          "to_address": "0xffffffffffffffffffffffffffffffffffffffff",
+          "amount": "5000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345686,
+          "gas_used": 45000,
+          "created_at": "2025-01-13T11:00:00Z"
+        }
+      ],
+      "htmlPreview": "<table class=\"transactions-table\">\n  <thead>\n    <tr>\n      <th>ID</th><th>TX Hash</th><th>From</th><th>To</th><th>Amount</th><th>Type</th><th>Status</th><th>Block</th><th>Gas</th><th>Date</th>\n    </...",
+      "validation": {
+        "passed": true,
+        "reason": ""
+      }
+    }
+  },
+  {
+    "testName": "Filter - Transfers Only",
+    "passed": true,
+    "output": {
+      "rowCount": 5,
+      "data": [
+        {
+          "id": 1,
+          "tx_hash": "0xabc123def456789012345678901234567890123456789012345678901234567890",
+          "from_address": "0x1111111111111111111111111111111111111111",
+          "to_address": "0x2222222222222222222222222222222222222222",
+          "amount": "100.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345678,
+          "gas_used": 21000,
+          "created_at": "2025-01-15T10:00:00Z"
+        },
+        {
+          "id": 4,
+          "tx_hash": "0x2222222222222222222222222222222222222222222222222222222222222222",
+          "from_address": "0x5555555555555555555555555555555555555555",
+          "to_address": "0x6666666666666666666666666666666666666666",
+          "amount": "250.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345681,
+          "gas_used": 21000,
+          "created_at": "2025-01-15T10:15:00Z"
+        },
+        {
+          "id": 5,
+          "tx_hash": "0x3333333333333333333333333333333333333333333333333333333333333333",
+          "from_address": "0x7777777777777777777777777777777777777777",
+          "to_address": "0x8888888888888888888888888888888888888888",
+          "amount": "500.0",
+          "tx_type": "transfer",
+          "status": "pending",
+          "block_number": null,
+          "gas_used": null,
+          "created_at": "2025-01-15T10:20:00Z"
+        },
+        {
+          "id": 7,
+          "tx_hash": "0x5555555555555555555555555555555555555555555555555555555555555555",
+          "from_address": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "to_address": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "amount": "750.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345683,
+          "gas_used": 21000,
+          "created_at": "2025-01-14T14:00:00Z"
+        },
+        {
+          "id": 9,
+          "tx_hash": "0x7777777777777777777777777777777777777777777777777777777777777777",
+          "from_address": "0xdddddddddddddddddddddddddddddddddddddddd",
+          "to_address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "amount": "1500.0",
+          "tx_type": "transfer",
+          "status": "failed",
+          "block_number": 12345685,
+          "gas_used": 21000,
+          "created_at": "2025-01-13T12:00:00Z"
+        }
+      ],
+      "htmlPreview": "<table class=\"transactions-table\">\n  <thead>\n    <tr>\n      <th>ID</th><th>TX Hash</th><th>From</th><th>To</th><th>Amount</th><th>Type</th><th>Status</th><th>Block</th><th>Gas</th><th>Date</th>\n    </...",
+      "validation": {
+        "passed": true,
+        "reason": ""
+      }
+    }
+  },
+  {
+    "testName": "Filter - Mints Only",
+    "passed": true,
+    "output": {
+      "rowCount": 3,
+      "data": [
+        {
+          "id": 2,
+          "tx_hash": "0xdef456789012345678901234567890123456789012345678901234567890abcdef",
+          "from_address": "0xOwner123",
+          "to_address": "0x3333333333333333333333333333333333333333",
+          "amount": "1000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345679,
+          "gas_used": 45000,
+          "created_at": "2025-01-15T10:05:00Z"
+        },
+        {
+          "id": 6,
+          "tx_hash": "0x4444444444444444444444444444444444444444444444444444444444444444",
+          "from_address": "0xOwner123",
+          "to_address": "0x9999999999999999999999999999999999999999",
+          "amount": "2000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345682,
+          "gas_used": 45000,
+          "created_at": "2025-01-14T15:00:00Z"
+        },
+        {
+          "id": 10,
+          "tx_hash": "0x8888888888888888888888888888888888888888888888888888888888888888",
+          "from_address": "0xOwner123",
+          "to_address": "0xffffffffffffffffffffffffffffffffffffffff",
+          "amount": "5000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345686,
+          "gas_used": 45000,
+          "created_at": "2025-01-13T11:00:00Z"
+        }
+      ],
+      "htmlPreview": "<table class=\"transactions-table\">\n  <thead>\n    <tr>\n      <th>ID</th><th>TX Hash</th><th>From</th><th>To</th><th>Amount</th><th>Type</th><th>Status</th><th>Block</th><th>Gas</th><th>Date</th>\n    </...",
+      "validation": {
+        "passed": true,
+        "reason": ""
+      }
+    }
+  },
+  {
+    "testName": "Filter - Burns Only",
+    "passed": true,
+    "output": {
+      "rowCount": 2,
+      "data": [
+        {
+          "id": 3,
+          "tx_hash": "0x1111111111111111111111111111111111111111111111111111111111111111",
+          "from_address": "0x4444444444444444444444444444444444444444",
+          "to_address": "0x0000000000000000000000000000000000000000",
+          "amount": "50.0",
+          "tx_type": "burn",
+          "status": "confirmed",
+          "block_number": 12345680,
+          "gas_used": 30000,
+          "created_at": "2025-01-15T10:10:00Z"
+        },
+        {
+          "id": 8,
+          "tx_hash": "0x6666666666666666666666666666666666666666666666666666666666666666",
+          "from_address": "0xcccccccccccccccccccccccccccccccccccccccc",
+          "to_address": "0x0000000000000000000000000000000000000000",
+          "amount": "100.0",
+          "tx_type": "burn",
+          "status": "confirmed",
+          "block_number": 12345684,
+          "gas_used": 30000,
+          "created_at": "2025-01-14T13:00:00Z"
+        }
+      ],
+      "htmlPreview": "<table class=\"transactions-table\">\n  <thead>\n    <tr>\n      <th>ID</th><th>TX Hash</th><th>From</th><th>To</th><th>Amount</th><th>Type</th><th>Status</th><th>Block</th><th>Gas</th><th>Date</th>\n    </...",
+      "validation": {
+        "passed": true,
+        "reason": ""
+      }
+    }
+  },
+  {
+    "testName": "Filter - Confirmed Only",
+    "passed": true,
+    "output": {
+      "rowCount": 8,
+      "data": [
+        {
+          "id": 1,
+          "tx_hash": "0xabc123def456789012345678901234567890123456789012345678901234567890",
+          "from_address": "0x1111111111111111111111111111111111111111",
+          "to_address": "0x2222222222222222222222222222222222222222",
+          "amount": "100.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345678,
+          "gas_used": 21000,
+          "created_at": "2025-01-15T10:00:00Z"
+        },
+        {
+          "id": 2,
+          "tx_hash": "0xdef456789012345678901234567890123456789012345678901234567890abcdef",
+          "from_address": "0xOwner123",
+          "to_address": "0x3333333333333333333333333333333333333333",
+          "amount": "1000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345679,
+          "gas_used": 45000,
+          "created_at": "2025-01-15T10:05:00Z"
+        },
+        {
+          "id": 3,
+          "tx_hash": "0x1111111111111111111111111111111111111111111111111111111111111111",
+          "from_address": "0x4444444444444444444444444444444444444444",
+          "to_address": "0x0000000000000000000000000000000000000000",
+          "amount": "50.0",
+          "tx_type": "burn",
+          "status": "confirmed",
+          "block_number": 12345680,
+          "gas_used": 30000,
+          "created_at": "2025-01-15T10:10:00Z"
+        },
+        {
+          "id": 4,
+          "tx_hash": "0x2222222222222222222222222222222222222222222222222222222222222222",
+          "from_address": "0x5555555555555555555555555555555555555555",
+          "to_address": "0x6666666666666666666666666666666666666666",
+          "amount": "250.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345681,
+          "gas_used": 21000,
+          "created_at": "2025-01-15T10:15:00Z"
+        },
+        {
+          "id": 6,
+          "tx_hash": "0x4444444444444444444444444444444444444444444444444444444444444444",
+          "from_address": "0xOwner123",
+          "to_address": "0x9999999999999999999999999999999999999999",
+          "amount": "2000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345682,
+          "gas_used": 45000,
+          "created_at": "2025-01-14T15:00:00Z"
+        },
+        {
+          "id": 7,
+          "tx_hash": "0x5555555555555555555555555555555555555555555555555555555555555555",
+          "from_address": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "to_address": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "amount": "750.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345683,
+          "gas_used": 21000,
+          "created_at": "2025-01-14T14:00:00Z"
+        },
+        {
+          "id": 8,
+          "tx_hash": "0x6666666666666666666666666666666666666666666666666666666666666666",
+          "from_address": "0xcccccccccccccccccccccccccccccccccccccccc",
+          "to_address": "0x0000000000000000000000000000000000000000",
+          "amount": "100.0",
+          "tx_type": "burn",
+          "status": "confirmed",
+          "block_number": 12345684,
+          "gas_used": 30000,
+          "created_at": "2025-01-14T13:00:00Z"
+        },
+        {
+          "id": 10,
+          "tx_hash": "0x8888888888888888888888888888888888888888888888888888888888888888",
+          "from_address": "0xOwner123",
+          "to_address": "0xffffffffffffffffffffffffffffffffffffffff",
+          "amount": "5000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345686,
+          "gas_used": 45000,
+          "created_at": "2025-01-13T11:00:00Z"
+        }
+      ],
+      "htmlPreview": "<table class=\"transactions-table\">\n  <thead>\n    <tr>\n      <th>ID</th><th>TX Hash</th><th>From</th><th>To</th><th>Amount</th><th>Type</th><th>Status</th><th>Block</th><th>Gas</th><th>Date</th>\n    </...",
+      "validation": {
+        "passed": true,
+        "reason": ""
+      }
+    }
+  },
+  {
+    "testName": "Filter - Pending Only",
+    "passed": true,
+    "output": {
+      "rowCount": 1,
+      "data": [
+        {
+          "id": 5,
+          "tx_hash": "0x3333333333333333333333333333333333333333333333333333333333333333",
+          "from_address": "0x7777777777777777777777777777777777777777",
+          "to_address": "0x8888888888888888888888888888888888888888",
+          "amount": "500.0",
+          "tx_type": "transfer",
+          "status": "pending",
+          "block_number": null,
+          "gas_used": null,
+          "created_at": "2025-01-15T10:20:00Z"
+        }
+      ],
+      "htmlPreview": "<table class=\"transactions-table\">\n  <thead>\n    <tr>\n      <th>ID</th><th>TX Hash</th><th>From</th><th>To</th><th>Amount</th><th>Type</th><th>Status</th><th>Block</th><th>Gas</th><th>Date</th>\n    </...",
+      "validation": {
+        "passed": true,
+        "reason": ""
+      }
+    }
+  },
+  {
+    "testName": "Sort by Amount DESC",
+    "passed": true,
+    "output": {
+      "rowCount": 10,
+      "data": [
+        {
+          "id": 10,
+          "tx_hash": "0x8888888888888888888888888888888888888888888888888888888888888888",
+          "from_address": "0xOwner123",
+          "to_address": "0xffffffffffffffffffffffffffffffffffffffff",
+          "amount": "5000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345686,
+          "gas_used": 45000,
+          "created_at": "2025-01-13T11:00:00Z"
+        },
+        {
+          "id": 6,
+          "tx_hash": "0x4444444444444444444444444444444444444444444444444444444444444444",
+          "from_address": "0xOwner123",
+          "to_address": "0x9999999999999999999999999999999999999999",
+          "amount": "2000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345682,
+          "gas_used": 45000,
+          "created_at": "2025-01-14T15:00:00Z"
+        },
+        {
+          "id": 9,
+          "tx_hash": "0x7777777777777777777777777777777777777777777777777777777777777777",
+          "from_address": "0xdddddddddddddddddddddddddddddddddddddddd",
+          "to_address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "amount": "1500.0",
+          "tx_type": "transfer",
+          "status": "failed",
+          "block_number": 12345685,
+          "gas_used": 21000,
+          "created_at": "2025-01-13T12:00:00Z"
+        },
+        {
+          "id": 2,
+          "tx_hash": "0xdef456789012345678901234567890123456789012345678901234567890abcdef",
+          "from_address": "0xOwner123",
+          "to_address": "0x3333333333333333333333333333333333333333",
+          "amount": "1000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345679,
+          "gas_used": 45000,
+          "created_at": "2025-01-15T10:05:00Z"
+        },
+        {
+          "id": 7,
+          "tx_hash": "0x5555555555555555555555555555555555555555555555555555555555555555",
+          "from_address": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "to_address": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "amount": "750.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345683,
+          "gas_used": 21000,
+          "created_at": "2025-01-14T14:00:00Z"
+        },
+        {
+          "id": 5,
+          "tx_hash": "0x3333333333333333333333333333333333333333333333333333333333333333",
+          "from_address": "0x7777777777777777777777777777777777777777",
+          "to_address": "0x8888888888888888888888888888888888888888",
+          "amount": "500.0",
+          "tx_type": "transfer",
+          "status": "pending",
+          "block_number": null,
+          "gas_used": null,
+          "created_at": "2025-01-15T10:20:00Z"
+        },
+        {
+          "id": 4,
+          "tx_hash": "0x2222222222222222222222222222222222222222222222222222222222222222",
+          "from_address": "0x5555555555555555555555555555555555555555",
+          "to_address": "0x6666666666666666666666666666666666666666",
+          "amount": "250.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345681,
+          "gas_used": 21000,
+          "created_at": "2025-01-15T10:15:00Z"
+        },
+        {
+          "id": 8,
+          "tx_hash": "0x6666666666666666666666666666666666666666666666666666666666666666",
+          "from_address": "0xcccccccccccccccccccccccccccccccccccccccc",
+          "to_address": "0x0000000000000000000000000000000000000000",
+          "amount": "100.0",
+          "tx_type": "burn",
+          "status": "confirmed",
+          "block_number": 12345684,
+          "gas_used": 30000,
+          "created_at": "2025-01-14T13:00:00Z"
+        },
+        {
+          "id": 1,
+          "tx_hash": "0xabc123def456789012345678901234567890123456789012345678901234567890",
+          "from_address": "0x1111111111111111111111111111111111111111",
+          "to_address": "0x2222222222222222222222222222222222222222",
+          "amount": "100.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345678,
+          "gas_used": 21000,
+          "created_at": "2025-01-15T10:00:00Z"
+        },
+        {
+          "id": 3,
+          "tx_hash": "0x1111111111111111111111111111111111111111111111111111111111111111",
+          "from_address": "0x4444444444444444444444444444444444444444",
+          "to_address": "0x0000000000000000000000000000000000000000",
+          "amount": "50.0",
+          "tx_type": "burn",
+          "status": "confirmed",
+          "block_number": 12345680,
+          "gas_used": 30000,
+          "created_at": "2025-01-15T10:10:00Z"
+        }
+      ],
+      "htmlPreview": "<table class=\"transactions-table\">\n  <thead>\n    <tr>\n      <th>ID</th><th>TX Hash</th><th>From</th><th>To</th><th>Amount</th><th>Type</th><th>Status</th><th>Block</th><th>Gas</th><th>Date</th>\n    </...",
+      "validation": {
+        "passed": true,
+        "reason": ""
+      }
+    }
+  },
+  {
+    "testName": "Sort by Date DESC (Recent First)",
+    "passed": true,
+    "output": {
+      "rowCount": 10,
+      "data": [
+        {
+          "id": 5,
+          "tx_hash": "0x3333333333333333333333333333333333333333333333333333333333333333",
+          "from_address": "0x7777777777777777777777777777777777777777",
+          "to_address": "0x8888888888888888888888888888888888888888",
+          "amount": "500.0",
+          "tx_type": "transfer",
+          "status": "pending",
+          "block_number": null,
+          "gas_used": null,
+          "created_at": "2025-01-15T10:20:00Z"
+        },
+        {
+          "id": 4,
+          "tx_hash": "0x2222222222222222222222222222222222222222222222222222222222222222",
+          "from_address": "0x5555555555555555555555555555555555555555",
+          "to_address": "0x6666666666666666666666666666666666666666",
+          "amount": "250.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345681,
+          "gas_used": 21000,
+          "created_at": "2025-01-15T10:15:00Z"
+        },
+        {
+          "id": 3,
+          "tx_hash": "0x1111111111111111111111111111111111111111111111111111111111111111",
+          "from_address": "0x4444444444444444444444444444444444444444",
+          "to_address": "0x0000000000000000000000000000000000000000",
+          "amount": "50.0",
+          "tx_type": "burn",
+          "status": "confirmed",
+          "block_number": 12345680,
+          "gas_used": 30000,
+          "created_at": "2025-01-15T10:10:00Z"
+        },
+        {
+          "id": 2,
+          "tx_hash": "0xdef456789012345678901234567890123456789012345678901234567890abcdef",
+          "from_address": "0xOwner123",
+          "to_address": "0x3333333333333333333333333333333333333333",
+          "amount": "1000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345679,
+          "gas_used": 45000,
+          "created_at": "2025-01-15T10:05:00Z"
+        },
+        {
+          "id": 1,
+          "tx_hash": "0xabc123def456789012345678901234567890123456789012345678901234567890",
+          "from_address": "0x1111111111111111111111111111111111111111",
+          "to_address": "0x2222222222222222222222222222222222222222",
+          "amount": "100.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345678,
+          "gas_used": 21000,
+          "created_at": "2025-01-15T10:00:00Z"
+        },
+        {
+          "id": 6,
+          "tx_hash": "0x4444444444444444444444444444444444444444444444444444444444444444",
+          "from_address": "0xOwner123",
+          "to_address": "0x9999999999999999999999999999999999999999",
+          "amount": "2000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345682,
+          "gas_used": 45000,
+          "created_at": "2025-01-14T15:00:00Z"
+        },
+        {
+          "id": 7,
+          "tx_hash": "0x5555555555555555555555555555555555555555555555555555555555555555",
+          "from_address": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "to_address": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "amount": "750.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345683,
+          "gas_used": 21000,
+          "created_at": "2025-01-14T14:00:00Z"
+        },
+        {
+          "id": 8,
+          "tx_hash": "0x6666666666666666666666666666666666666666666666666666666666666666",
+          "from_address": "0xcccccccccccccccccccccccccccccccccccccccc",
+          "to_address": "0x0000000000000000000000000000000000000000",
+          "amount": "100.0",
+          "tx_type": "burn",
+          "status": "confirmed",
+          "block_number": 12345684,
+          "gas_used": 30000,
+          "created_at": "2025-01-14T13:00:00Z"
+        },
+        {
+          "id": 9,
+          "tx_hash": "0x7777777777777777777777777777777777777777777777777777777777777777",
+          "from_address": "0xdddddddddddddddddddddddddddddddddddddddd",
+          "to_address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "amount": "1500.0",
+          "tx_type": "transfer",
+          "status": "failed",
+          "block_number": 12345685,
+          "gas_used": 21000,
+          "created_at": "2025-01-13T12:00:00Z"
+        },
+        {
+          "id": 10,
+          "tx_hash": "0x8888888888888888888888888888888888888888888888888888888888888888",
+          "from_address": "0xOwner123",
+          "to_address": "0xffffffffffffffffffffffffffffffffffffffff",
+          "amount": "5000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345686,
+          "gas_used": 45000,
+          "created_at": "2025-01-13T11:00:00Z"
+        }
+      ],
+      "htmlPreview": "<table class=\"transactions-table\">\n  <thead>\n    <tr>\n      <th>ID</th><th>TX Hash</th><th>From</th><th>To</th><th>Amount</th><th>Type</th><th>Status</th><th>Block</th><th>Gas</th><th>Date</th>\n    </...",
+      "validation": {
+        "passed": true,
+        "reason": ""
+      }
+    }
+  },
+  {
+    "testName": "Search by TX Hash",
+    "passed": true,
+    "output": {
+      "rowCount": 1,
+      "data": [
+        {
+          "id": 1,
+          "tx_hash": "0xabc123def456789012345678901234567890123456789012345678901234567890",
+          "from_address": "0x1111111111111111111111111111111111111111",
+          "to_address": "0x2222222222222222222222222222222222222222",
+          "amount": "100.0",
+          "tx_type": "transfer",
+          "status": "confirmed",
+          "block_number": 12345678,
+          "gas_used": 21000,
+          "created_at": "2025-01-15T10:00:00Z"
+        }
+      ],
+      "htmlPreview": "<table class=\"transactions-table\">\n  <thead>\n    <tr>\n      <th>ID</th><th>TX Hash</th><th>From</th><th>To</th><th>Amount</th><th>Type</th><th>Status</th><th>Block</th><th>Gas</th><th>Date</th>\n    </...",
+      "validation": {
+        "passed": true,
+        "reason": ""
+      }
+    }
+  },
+  {
+    "testName": "Filter Large Transactions (>= 1000 AMS)",
+    "passed": true,
+    "output": {
+      "rowCount": 4,
+      "data": [
+        {
+          "id": 2,
+          "tx_hash": "0xdef456789012345678901234567890123456789012345678901234567890abcdef",
+          "from_address": "0xOwner123",
+          "to_address": "0x3333333333333333333333333333333333333333",
+          "amount": "1000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345679,
+          "gas_used": 45000,
+          "created_at": "2025-01-15T10:05:00Z"
+        },
+        {
+          "id": 6,
+          "tx_hash": "0x4444444444444444444444444444444444444444444444444444444444444444",
+          "from_address": "0xOwner123",
+          "to_address": "0x9999999999999999999999999999999999999999",
+          "amount": "2000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345682,
+          "gas_used": 45000,
+          "created_at": "2025-01-14T15:00:00Z"
+        },
+        {
+          "id": 9,
+          "tx_hash": "0x7777777777777777777777777777777777777777777777777777777777777777",
+          "from_address": "0xdddddddddddddddddddddddddddddddddddddddd",
+          "to_address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "amount": "1500.0",
+          "tx_type": "transfer",
+          "status": "failed",
+          "block_number": 12345685,
+          "gas_used": 21000,
+          "created_at": "2025-01-13T12:00:00Z"
+        },
+        {
+          "id": 10,
+          "tx_hash": "0x8888888888888888888888888888888888888888888888888888888888888888",
+          "from_address": "0xOwner123",
+          "to_address": "0xffffffffffffffffffffffffffffffffffffffff",
+          "amount": "5000.0",
+          "tx_type": "mint",
+          "status": "confirmed",
+          "block_number": 12345686,
+          "gas_used": 45000,
+          "created_at": "2025-01-13T11:00:00Z"
+        }
+      ],
+      "htmlPreview": "<table class=\"transactions-table\">\n  <thead>\n    <tr>\n      <th>ID</th><th>TX Hash</th><th>From</th><th>To</th><th>Amount</th><th>Type</th><th>Status</th><th>Block</th><th>Gas</th><th>Date</th>\n    </...",
+      "validation": {
+        "passed": true,
+        "reason": ""
+      }
+    }
+  }
+]

@@ -1,0 +1,91 @@
+[
+  {
+    "testName": "Valid Donation - All Fields",
+    "passed": false,
+    "output": {
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Invalid wallet address"
+        ]
+      }
+    }
+  },
+  {
+    "testName": "Valid Donation - All Fields",
+    "passed": false,
+    "error": "Cannot read properties of undefined (reading 'join')"
+  },
+  {
+    "testName": "Valid - Anonymous Donation",
+    "passed": true,
+    "output": {
+      "validation": {
+        "valid": true,
+        "errors": []
+      },
+      "dbRecord": {
+        "donor_name": "...",
+        "donor_email": null,
+        "wallet_address": "0x1234567890123456789012345678901234567890",
+        "amount_bnb": 1,
+        "amount_ams": 1000,
+        "status": "pending",
+        "message": null,
+        "created_at": "2025-11-09T13:25:42.674Z"
+      },
+      "schemaValid": true
+    }
+  },
+  {
+    "testName": "Invalid - Invalid Email",
+    "passed": false,
+    "output": {
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Invalid email format",
+          "Invalid wallet address"
+        ]
+      }
+    }
+  },
+  {
+    "testName": "Invalid - Invalid Wallet Address",
+    "passed": true,
+    "output": {
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Invalid wallet address"
+        ]
+      }
+    }
+  },
+  {
+    "testName": "Invalid - Amount Too Small",
+    "passed": false,
+    "output": {
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Invalid wallet address",
+          "Amount below minimum (0.01 BNB)"
+        ]
+      }
+    }
+  },
+  {
+    "testName": "Invalid - Terms Not Agreed",
+    "passed": false,
+    "output": {
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Invalid wallet address",
+          "Must agree to terms"
+        ]
+      }
+    }
+  }
+]

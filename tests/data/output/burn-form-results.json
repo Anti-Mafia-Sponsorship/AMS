@@ -1,0 +1,40 @@
+[
+  {
+    "testName": "Valid Burn",
+    "passed": false,
+    "output": {
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Invalid wallet address"
+        ]
+      }
+    }
+  },
+  {
+    "testName": "Invalid - Amount Exceeds Balance",
+    "passed": true,
+    "output": {
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Invalid wallet address",
+          "Amount exceeds balance"
+        ]
+      }
+    }
+  },
+  {
+    "testName": "Invalid - Zero Amount",
+    "passed": true,
+    "output": {
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Invalid wallet address",
+          "Amount must be greater than zero"
+        ]
+      }
+    }
+  }
+]

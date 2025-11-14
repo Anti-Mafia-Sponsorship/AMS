@@ -1,0 +1,39 @@
+[
+  {
+    "testName": "Valid Mint - Owner",
+    "passed": false,
+    "output": {
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Invalid recipient address"
+        ]
+      }
+    }
+  },
+  {
+    "testName": "Invalid - Non-Owner",
+    "passed": true,
+    "output": {
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Only owner can mint",
+          "Invalid recipient address"
+        ]
+      }
+    }
+  },
+  {
+    "testName": "Invalid - Mint to Zero Address",
+    "passed": true,
+    "output": {
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Cannot mint to zero address"
+        ]
+      }
+    }
+  }
+]

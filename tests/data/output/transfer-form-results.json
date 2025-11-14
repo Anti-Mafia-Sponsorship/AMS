@@ -1,0 +1,36 @@
+[
+  {
+    "testName": "Valid Transfer",
+    "passed": true,
+    "output": {
+      "validation": {
+        "valid": true,
+        "errors": []
+      }
+    }
+  },
+  {
+    "testName": "Invalid - Invalid Recipient",
+    "passed": true,
+    "output": {
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Invalid recipient address"
+        ]
+      }
+    }
+  },
+  {
+    "testName": "Invalid - Insufficient Balance",
+    "passed": true,
+    "output": {
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Insufficient balance"
+        ]
+      }
+    }
+  }
+]
